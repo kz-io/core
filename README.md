@@ -28,6 +28,7 @@ A collection of core modules containing commonly-used features and types, adapte
 - [exceptions][exceptions] - provides commonly-used exceptions.
 - [dispose][dispose] - provides types and features for using and disposing of managed resources.
 - [observe][observe] - provides types and features for implementing the observer pattern.
+- [compare][compare] - provides features and types for comparing and sorting.
 
 ## Contributing
 
@@ -89,3 +90,4 @@ The MIT License (MIT) 2020-2024 integereleven. Refer to [LICENSE][license] for d
 [exceptions]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/exceptions/mod.ts "@kz/core/exceptions module docs"
 [dispose]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/dispose/mod.ts "@kz/core/dispose module docs"
 [observe]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/observe/mod.ts "@kz/core/observe module docs"
+[compare]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/compare/mod.ts "@kz/core/compare module docs"
