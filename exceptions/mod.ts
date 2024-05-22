@@ -6,6 +6,8 @@
  * @module exception
  */
 
+export * from './types/mod.ts';
+
 export { Exception, type ExceptionData } from './exception.ts';
 export {
   InvalidException,
