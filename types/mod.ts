@@ -1,7 +1,7 @@
 /**
  * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
  *
- * The `@kz/core/types` module provides commonly used type aliases and interfaces.
+ * The `@kz/core/types` module provides commonly used enums, type aliases and interfaces.
  *
  * ```ts
  * import type { IHelpful } from './mod.ts';

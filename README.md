@@ -20,11 +20,12 @@ A collection of core modules containing commonly-used features and types, adapte
 
 ## Examples
 
-<!-- TODO: Add examples -->
+<!-- TODO: Add examples for main module -->
 
 ## Sub-modules
 
-<!-- TODO: Update with links to modules on jsr -->
+- [types][types] - provides commonly used enums, type aliases, and interfaces.
+- [exceptions][exceptions] - provides commonly-used exceptions.
 
 ## Contributing
 
@@ -76,3 +77,8 @@ The MIT License (MIT) 2020-2024 integereleven. Refer to [LICENSE][license] for d
 [releases]: https://github.com/kz-io/core/releases "@kz/core releases on GitHub"
 [contributing]: https://github.com/kz-io/core/blob/main/CONTRIBUTING.md "@kz/core contributing guidelines"
 [license]: https://github.com/kz-io/core/blob/main/LICENSE "@kz/core license"
+
+<!-- TODO: Update with links to modules on jsr -->
+
+[types]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/types/mod.ts "@kz/core/types module docs"
+[exceptions]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/exceptions/mod.ts "@kz/core/exceptions module docs"
