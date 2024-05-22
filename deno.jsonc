@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "exports": {
     "./types": "./types/mod.ts",
-    "./dispose": "./dispose/mod.ts"
+    "./dispose": "./dispose/mod.ts",
+    "./observe": "./observe/mod.ts"
   },
   "lint": {
     "rules": {
@@ -35,7 +36,7 @@
     "cov": "deno task test && deno task cov:gen && deno task cov:report",
     "cov:gen": "deno coverage coverage --lcov --output=cov.lcov",
     "cov:report": "deno coverage --html coverage",
-    "docs": "deno doc --html --name=@kz/core ./types/mod.ts ./exceptions/mod.ts ./dispose/mod.ts",
+    "docs": "deno doc --html --name=@kz/core ./types/mod.ts ./exceptions/mod.ts ./dispose/mod.ts ./observe/mod.ts",
     "pre-commit": "deno task lint && deno task fmt && deno task cov && deno task docs"
   },
   "imports": {
