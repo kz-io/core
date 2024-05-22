@@ -3,7 +3,7 @@
  *
  * The `@kz/core/dispose` module provides types and features for using and disposing of managed resources.
  *
- * @module exception
+ * @module dispose
  */
 
 export * from './exceptions/mod.ts';

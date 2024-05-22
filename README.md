@@ -27,6 +27,7 @@ A collection of core modules containing commonly-used features and types, adapte
 - [types][types] - provides commonly used enums, type aliases, and interfaces.
 - [exceptions][exceptions] - provides commonly-used exceptions.
 - [dispose][dispose] - provides types and features for using and disposing of managed resources.
+- [observe][observe] - provides types and features for implementing the observer pattern.
 
 ## Contributing
 
@@ -61,6 +62,9 @@ The MIT License (MIT) 2020-2024 integereleven. Refer to [LICENSE][license] for d
 <a href="https://github.com/kz-io/core/issues">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/kz-io/core?style=flat-square">
 </a>
+<a href="https://codecov.io/gh/kz-io/core" >
+  <img src="https://codecov.io/gh/kz-io/core/graph/badge.svg?token=TH8uOvl1sk"/>
+</a>
 </p>
 
 <p align="center">
@@ -84,3 +88,4 @@ The MIT License (MIT) 2020-2024 integereleven. Refer to [LICENSE][license] for d
 [types]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/types/mod.ts "@kz/core/types module docs"
 [exceptions]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/exceptions/mod.ts "@kz/core/exceptions module docs"
 [dispose]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/dispose/mod.ts "@kz/core/dispose module docs"
+[observe]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/observe/mod.ts "@kz/core/observe module docs"
