@@ -24,6 +24,7 @@ export type {
 
 export type {
   Codebase,
+  Constructor,
   Converter,
   ConverterFn,
   DecoratorTarget,

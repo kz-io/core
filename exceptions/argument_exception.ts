@@ -3,7 +3,7 @@
  * @file This file exports the ArgumentException class and its related exception data type.
  */
 
-import { definedArgs } from './_internal/mod.ts';
+import { definedArgs } from '../_internal/mod.ts';
 import { ValueException } from './value_exception.ts';
 
 import type { BaseExceptionData } from './types/mod.ts';
