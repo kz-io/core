@@ -177,3 +177,27 @@ export type ConverterFn<F, T> = (value: F) => T;
  * ```
  */
 export type Converter<F, T> = TConverter<F, T> | ConverterFn<F, T>;
+
+/**
+ * Describes a class constructor function.
+ *
+ * @template T The type of the class.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import type { Constructor } from './type_aliases.ts';
+ *
+ * class MyClass {
+ *   constructor(public name: string) {}
+ * }
+ *
+ * const MyClassConstructor: Constructor<MyClass> = MyClass;
+ *
+ * const myClassInstance = new MyClassConstructor('My Class');
+ *
+ * assertEquals(myClassInstance.name, 'My Class');
+ * ```
+ */
+// deno-lint-ignore no-explicit-any
+export type Constructor<T> = new (...args: any[]) => T;

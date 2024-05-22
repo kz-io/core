@@ -24,11 +24,14 @@ A collection of core modules containing commonly-used features and types, adapte
 
 ## Sub-modules
 
-- [types][types] - provides commonly used enums, type aliases, and interfaces.
-- [exceptions][exceptions] - provides commonly-used exceptions.
-- [dispose][dispose] - provides types and features for using and disposing of managed resources.
-- [observe][observe] - provides types and features for implementing the observer pattern.
+Doc links are temporary while module is being developed and is unreleased.
+
 - [compare][compare] - provides features and types for comparing and sorting.
+- [dispose][dispose] - provides types and features for using and disposing of managed resources.
+- [exceptions][exceptions] - provides commonly-used exceptions.
+- [observe][observe] - provides types and features for implementing the observer pattern.
+- [types][types] - provides commonly used enums, type aliases, and interfaces.
+- [warn][warn] - provides utilities and warnings for tracking of application issues.
 
 ## Contributing
 
@@ -86,8 +89,9 @@ The MIT License (MIT) 2020-2024 integereleven. Refer to [LICENSE][license] for d
 
 <!-- TODO: Update with links to modules on jsr -->
 
-[types]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/types/mod.ts "@kz/core/types module docs"
-[exceptions]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/exceptions/mod.ts "@kz/core/exceptions module docs"
-[dispose]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/dispose/mod.ts "@kz/core/dispose module docs"
-[observe]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/observe/mod.ts "@kz/core/observe module docs"
 [compare]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/compare/mod.ts "@kz/core/compare module docs"
+[dispose]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/dispose/mod.ts "@kz/core/dispose module docs"
+[exceptions]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/exceptions/mod.ts "@kz/core/exceptions module docs"
+[observe]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/observe/mod.ts "@kz/core/observe module docs"
+[types]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/types/mod.ts "@kz/core/types module docs"
+[warn]: https://doc.deno.land/https://denopkg.com/kz-io/core@dev/warn/mod.ts "@kz/core/warn module docs"

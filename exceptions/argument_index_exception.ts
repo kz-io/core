@@ -3,7 +3,7 @@
  * @file This file exports the ArgumentIndexException class and its related exception data type.
  */
 
-import { definedArgs } from './_internal/mod.ts';
+import { definedArgs } from '../_internal/mod.ts';
 import { IndexException } from './index_exception.ts';
 
 import type { BaseExceptionData } from './types/mod.ts';
