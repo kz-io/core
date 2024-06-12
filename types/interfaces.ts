@@ -3,7 +3,10 @@
  * @file Interfaces for the module. For type aliases, see ./type_aliases.ts.
  */
 
-import type { Converter } from './type_aliases.ts';
+import { toBigInt, toBoolean, toNumber, toSymbol } from './constants.ts';
+import { ComparisonResult } from './enums.ts';
+
+import type { Comparer, Converter } from './type_aliases.ts';
 
 /**
  * An interface providing a URL to an implemented object's help resource.
@@ -135,6 +138,9 @@ export interface TCloneable<T> {
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
+ *
+ * import * as PS from './constants.ts';
+ *
  * import type { IPrimitiveConvertible } from './interfaces.ts';
  *
  * const exampleSymbol = Symbol('example');
@@ -144,25 +150,25 @@ export interface TCloneable<T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this.toNumber();
+ *       return this[PS.toNumber]();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public toBoolean(): boolean {
+ *   public [PS.toBoolean](): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public toNumber(): number {
+ *   public [PS.toNumber](): number {
  *     return this.age;
  *   }
  *
- *   public toBigInt(): bigint {
+ *   public [PS.toBigInt](): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public toSymbol(): symbol {
+ *   public [PS.toSymbol](): symbol {
  *     return exampleSymbol;
  *   }
  *
@@ -178,9 +184,9 @@ export interface TCloneable<T> {
  * const instance = new MyClass('Alice', 30);
  *
  * assertEquals(instance.toString(), 'Alice');
- * assertEquals(instance.toBoolean(), true);
- * assertEquals(instance.toBigInt(), BigInt(30));
- * assertEquals(instance.toSymbol(), exampleSymbol);
+ * assertEquals(instance[PS.toBoolean](), true);
+ * assertEquals(instance[PS.toBigInt](), BigInt(30));
+ * assertEquals(instance[PS.toSymbol](), exampleSymbol);
  * ```
  */
 export interface IPrimitiveConvertible {
@@ -196,22 +202,22 @@ export interface IPrimitiveConvertible {
   /**
    * Converts the object to a boolean value.
    */
-  toBoolean(): boolean;
+  [toBoolean](): boolean;
 
   /**
    * Converts the object to a number value.
    */
-  toNumber(): number;
+  [toNumber](): number;
 
   /**
    * Converts the object to a bigint value.
    */
-  toBigInt(): bigint;
+  [toBigInt](): bigint;
 
   /**
    * Converts the object to a symbol value.
    */
-  toSymbol(): symbol;
+  [toSymbol](): symbol;
 
   /**
    * Converts the object to a string value.
@@ -275,6 +281,9 @@ export interface TConverter<F, T> {
  * @example
  * ```ts
  * import { assertEquals, assertInstanceOf } from '@std/assert';
+ *
+ * import * as PS from './constants.ts';
+ *
  * import type { TConvertible } from './interfaces.ts';
  * import type { Converter } from './type_aliases.ts';
  *
@@ -298,25 +307,25 @@ export interface TConverter<F, T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this.toNumber();
+ *       return this[PS.toNumber]();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public toBoolean(): boolean {
+ *   public [PS.toBoolean](): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public toNumber(): number {
+ *   public [PS.toNumber](): number {
  *     return this.age;
  *   }
  *
- *   public toBigInt(): bigint {
+ *   public [PS.toBigInt](): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public toSymbol(): symbol {
+ *   public [PS.toSymbol](): symbol {
  *     return exampleSymbol;
  *   }
  *
@@ -378,4 +387,148 @@ export interface TConvertible<T extends Record<string, any>>
    * @param converter The converter to use.
    */
   convert<T>(converter: Converter<this, T>): T;
+}
+
+/**
+ * Describes an object that can be compared to another object.
+ *
+ * @template T - The type of the object to compare.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { ComparisonResult } from './enums.ts';
+ * import type { TComparable } from './interfaces.ts';
+ *
+ * class ComparableNumber implements TComparable<ComparableNumber> {
+ *   constructor(public readonly value: number) {}
+ *
+ *   compare(other: ComparableNumber, reverse = false): ComparisonResult {
+ *     const [a, b] = reverse
+ *       ? [other.value, this.value]
+ *       : [this.value, other.value];
+ *
+ *     return a < b
+ *       ? ComparisonResult.Lesser
+ *       : a > b
+ *       ? ComparisonResult.Greater
+ *       : ComparisonResult.Equal;
+ *   }
+ * }
+ *
+ * const a = new ComparableNumber(1);
+ * const b = new ComparableNumber(2);
+ *
+ * assertEquals(a.compare(b), ComparisonResult.Lesser);
+ * ```
+ */
+export interface TComparable<T> {
+  /**
+   * Compares this object to another object.
+   *
+   * @param other - The object to compare to.
+   * @param reverse - Whether to reverse the comparison.
+   *
+   * @returns The comparison result.
+   */
+  compare(other: T, reverse: boolean): ComparisonResult;
+}
+
+/**
+ * Describes an object that can compare two objects.
+ *
+ * @template T - The type of the objects to compare.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { ComparisonResult } from './enums.ts';
+ * import type { TComparer } from './interfaces.ts';
+ *
+ * const comparer: TComparer<number> = {
+ *   compare(a, b, reverse): ComparisonResult {
+ *     const [x, y] = reverse ? [b, a] : [a, b];
+ *     return x < y
+ *       ? ComparisonResult.Lesser
+ *       : x > y
+ *       ? ComparisonResult.Greater
+ *       : ComparisonResult.Equal;
+ *   },
+ * };
+ *
+ * const a = 1;
+ * const b = 2;
+ *
+ * assertEquals(comparer.compare(a, b, false), ComparisonResult.Lesser);
+ * ```
+ */
+export interface TComparer<T> {
+  /**
+   * Compares two objects.
+   *
+   * @param a The first object to compare.
+   * @param b The second object to compare.
+   * @param reverse Whether to reverse the comparison.
+   */
+  compare(a: T, b: T, reverse: boolean): ComparisonResult;
+}
+
+/**
+ * Describes an object that can be sorted.
+ *
+ * @template T - The interal type of the object to sort.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { ComparisonResult } from './enums.ts';
+ * import type { TSortable } from './interfaces.ts';
+ * import type { Comparer } from './type_aliases.ts';
+ *
+ * class SortableArray<T> implements TSortable<T> {
+ *   constructor(public readonly array: T[]) {}
+ *
+ *   sort(comparer: Comparer<T>, reverse = false): void {
+ *     this.array.sort((a, b) => {
+ *       return (typeof comparer === 'function')
+ *         ? comparer(a, b, reverse)
+ *         : comparer.compare(a, b, reverse);
+ *     });
+ *   }
+ *
+ *   [Symbol.iterator](): Iterator<T> {
+ *     return this.array[Symbol.iterator]();
+ *   }
+ * }
+ *
+ * const array = new SortableArray([3, 2, 1]);
+ *
+ * const comparer: Comparer<number> = {
+ *   compare(a: number, b: number, reverse = false): ComparisonResult {
+ *     const [x, y] = reverse ? [b, a] : [a, b];
+ *
+ *     return x < y
+ *       ? ComparisonResult.Lesser
+ *       : x > y
+ *       ? ComparisonResult.Greater
+ *       : ComparisonResult.Equal;
+ *   },
+ * };
+ * array.sort(comparer);
+ *
+ * assertEquals([...array], [1, 2, 3]);
+ *
+ * array.sort(comparer, true);
+ *
+ * assertEquals([...array], [3, 2, 1]);
+ * ```
+ */
+export interface TSortable<T> extends Iterable<T> {
+  /**
+   * Sorts the object.
+   *
+   * @param comparer - The comparer to use.
+   * @param reverse - Whether to reverse the sort.
+   */
+  sort(comparer: Comparer<T>, reverse: boolean): void;
 }

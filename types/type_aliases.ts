@@ -3,7 +3,8 @@
  * @file Type aliases for the module. For interfaces, see ./interfaces.ts.
  */
 
-import type { TConverter } from './interfaces.ts';
+import { ComparisonResult } from './enums.ts';
+import type { TComparer, TConverter } from './interfaces.ts';
 
 /**
  * A value that can be used as a key in an object.
@@ -34,6 +35,12 @@ export type KeyPrimitive = string | number | symbol;
  * ```
  */
 export type IndeterminateObject = Record<KeyPrimitive, unknown>;
+
+/**
+ * Describes an object that has any property values keyed by {@link KeyPrimitive} values.
+ */
+// deno-lint-ignore no-explicit-any
+export type AnyObject = Record<KeyPrimitive, any>;
 
 /**
  * Describes decorator targets.
@@ -201,3 +208,46 @@ export type Converter<F, T> = TConverter<F, T> | ConverterFn<F, T>;
  */
 // deno-lint-ignore no-explicit-any
 export type Constructor<T> = new (...args: any[]) => T;
+
+/**
+ * Describes a function that compares two objects.
+ *
+ * @template T - The type of the objects to compare.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { ComparisonResult } from './enums.ts';
+ * import type { ComparerFn } from './type_aliases.ts';
+ *
+ * const comparer: ComparerFn<number> = (
+ *   a: number,
+ *   b: number,
+ *   reverse = false,
+ * ): ComparisonResult => {
+ *    const [x, y] = reverse ? [b, a] : [a, b];
+ *
+ * return x < y
+ *   ? ComparisonResult.Lesser
+ *   : x > y
+ *     ? ComparisonResult.Greater
+ *     : ComparisonResult.Equal;
+ * };
+ *
+ * const a = 1;
+ * const b = 2;
+ *
+ * assertEquals(comparer(a, b, false), ComparisonResult.Lesser);
+ * ```
+ */
+export type ComparerFn<T> = (a: T, b: T, reverse: boolean) => ComparisonResult;
+
+/**
+ * Describe a function or object that compares two objects.
+ *
+ * @template T - The type of the objects to compare.
+ *
+ * @see {@link TComparer}
+ * @see {@link ComparerFn}
+ */
+export type Comparer<T> = TComparer<T> | ComparerFn<T>;

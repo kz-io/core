@@ -6,8 +6,9 @@
 import { describe, it } from '@std/testing/bdd';
 import { assertEquals } from '@std/assert';
 
-import { ComparisonResult, PropertyComparer } from './mod.ts';
+import { PropertyComparer } from './property_comparer.ts';
 
+import { ComparisonResult } from '../types/mod.ts';
 describe('PropertyComparer', () => {
   it('should compare two objects', () => {
     const comparer = new PropertyComparer('value');
