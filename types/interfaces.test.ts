@@ -6,6 +6,8 @@
 import { describe, it } from '@std/testing/bdd';
 import { assertEquals, assertInstanceOf } from '@std/assert';
 
+import { toBigInt, toBoolean, toNumber, toSymbol } from './constants.ts';
+
 import type {
   Converter,
   IHashable,
@@ -107,25 +109,25 @@ describe('Examples - interfaces', () => {
 
       public [Symbol.toPrimitive](hint: string): string | number {
         if (hint === 'number') {
-          return this.toNumber();
+          return this[toNumber]();
         }
 
         return this.toString();
       }
 
-      public toBoolean(): boolean {
+      public [toBoolean](): boolean {
         return this.age < 150;
       }
 
-      public toNumber(): number {
+      public [toNumber](): number {
         return this.age;
       }
 
-      public toBigInt(): bigint {
+      public [toBigInt](): bigint {
         return BigInt(this.age);
       }
 
-      public toSymbol(): symbol {
+      public [toSymbol](): symbol {
         return exampleSymbol;
       }
 
@@ -143,11 +145,11 @@ describe('Examples - interfaces', () => {
         const instance = new MyClass('Alice', 30);
 
         assertEquals(instance.toString(), 'Alice');
-        assertEquals(instance.toNumber(), 30);
-        assertEquals(instance.toBoolean(), true);
-        assertEquals(instance.toBigInt(), BigInt(30));
+        assertEquals(instance[toNumber](), 30);
+        assertEquals(instance[toBoolean](), true);
+        assertEquals(instance[toBigInt](), BigInt(30));
         assertEquals(instance.valueOf(), 30);
-        assertEquals(instance.toSymbol(), exampleSymbol);
+        assertEquals(instance[toSymbol](), exampleSymbol);
       });
     });
 
@@ -211,25 +213,25 @@ describe('Examples - interfaces', () => {
 
       public [Symbol.toPrimitive](hint: string): string | number {
         if (hint === 'number') {
-          return this.toNumber();
+          return this[toNumber]();
         }
 
         return this.toString();
       }
 
-      public toBoolean(): boolean {
+      public [toBoolean](): boolean {
         return this.age < 150;
       }
 
-      public toNumber(): number {
+      public [toNumber](): number {
         return this.age;
       }
 
-      public toBigInt(): bigint {
+      public [toBigInt](): bigint {
         return BigInt(this.age);
       }
 
-      public toSymbol(): symbol {
+      public [toSymbol](): symbol {
         return exampleSymbol;
       }
 

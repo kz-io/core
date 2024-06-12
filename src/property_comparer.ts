@@ -3,7 +3,7 @@
  * @file Exports the PropertyComparer class.
  */
 
-import { ComparisonResult, type TComparer } from './types/mod.ts';
+import { ComparisonResult, type TComparer } from '../types/mod.ts';
 
 /**
  * A comparer that compares two objects by a property of type `T`.

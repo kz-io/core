@@ -6,7 +6,7 @@
 import { describe, it } from '@std/testing/bdd';
 import { assertEquals } from '@std/assert';
 
-import { ComparisonResult } from '../mod.ts';
+import { ComparisonResult } from './mod.ts';
 
 describe('enums', () => {
   describe('ComparisonResult', () => {

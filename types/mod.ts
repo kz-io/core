@@ -13,17 +13,26 @@
  * @module types
  */
 
+export * as PrimitiveSymbols from './constants.ts';
+export { ComparisonResult } from './enums.ts';
+
 export type {
   IHashable,
   IHelpful,
   IPrimitiveConvertible,
   TCloneable,
+  TComparable,
+  TComparer,
   TConverter,
   TConvertible,
+  TSortable,
 } from './interfaces.ts';
 
 export type {
+  AnyObject,
   Codebase,
+  Comparer,
+  ComparerFn,
   Constructor,
   Converter,
   ConverterFn,
