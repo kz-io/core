@@ -251,3 +251,256 @@ export type ComparerFn<T> = (a: T, b: T, reverse: boolean) => ComparisonResult;
  * @see {@link ComparerFn}
  */
 export type Comparer<T> = TComparer<T> | ComparerFn<T>;
+
+/**
+ * Describes an empty tuple.
+ */
+type Nonary = [];
+
+/**
+ * Describes a tuple with one element.
+ *
+ * @template T1 The type of the first element.
+ */
+type Unary<T> = [T];
+
+/**
+ * Describes a tuple with two elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ */
+type Binary<T1, T2> = [T1, T2];
+
+/**
+ * Describes a tuple with three elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ * @template T3 The type of the third element.
+ */
+type Ternary<T1, T2, T3> = [T1, T2, T3];
+
+/**
+ * Describes a tuple with four elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ * @template T3 The type of the third element.
+ * @template T4 The type of the fourth element.
+ */
+type Quaternary<T1, T2, T3, T4> = [T1, T2, T3, T4];
+
+/**
+ * Describes an action that takes no arguments.
+ */
+type NullaryAction = () => void;
+
+/**
+ * Describes an action that takes one argument.
+ *
+ * @template T1 The type of the first argument.
+ */
+type UnaryAction1<T1> = (arg1: T1) => void;
+
+/**
+ * Describes an action that takes two arguments.
+ *
+ * @template T1 The type of the first argument.
+ * @template T2 The type of the second argument.
+ */
+type BinaryAction2<T1, T2> = (arg1: T1, arg2: T2) => void;
+
+/**
+ * Describes an action that takes options.
+ *
+ * @template O The type of the options.
+ */
+type OptionAction<O extends AnyObject> = (opts: O) => void;
+
+/**
+ * Describes an action that takes one argument and options.
+ *
+ * @template T1 The type of the first argument.
+ * @template O The type of the options.
+ */
+type UnaryOptionAction<T1, O extends AnyObject> = (arg1: T1, opts: O) => void;
+
+/**
+ * Describes an action that takes two arguments and options.
+ *
+ * @template T1 The type of the first argument.
+ * @template T2 The type of the second argument.
+ * @template O The type of the options.
+ */
+type BinaryOptionAction<T1, T2, O extends AnyObject> = (
+  arg1: T1,
+  arg2: T2,
+  opts: O,
+) => void;
+
+/**
+ * Describes a function that takes no arguments and returns a value.
+ *
+ * @template R The type of the return value.
+ */
+type NullaryFunc<R> = () => R;
+
+/**
+ * Describes a function that takes one argument and returns a value.
+ *
+ * @template T1 The type of the first argument.
+ * @template R The type of the return value.
+ */
+type UnaryFunc1<T1, R> = (arg1: T1) => R;
+
+/**
+ * Describes a function that takes two arguments and returns a value.
+ *
+ * @template T1 The type of the first argument.
+ * @template T2 The type of the second argument.
+ * @template R The type of the return value.
+ */
+type BinaryFunc2<T1, T2, R> = (arg1: T1, arg2: T2) => R;
+
+/**
+ * Describes a function that takes options and returns a value.
+ *
+ * @template O The type of the options.
+ * @template R The type of the return value.
+ */
+type OptionFunc<O extends AnyObject, R> = (opts: O) => R;
+
+/**
+ * Describes a function that takes one argument and options and returns a value.
+ *
+ * @template T1 The type of the first argument.
+ * @template O The type of the options.
+ * @template R The type of the return value.
+ */
+type UnaryOptionFunc<T1, O extends AnyObject, R> = (arg1: T1, opts: O) => R;
+
+/**
+ * Describes a function that takes two arguments and options and returns a value.
+ *
+ * @template T1 The type of the first argument.
+ * @template T2 The type of the second argument.
+ * @template O The type of the options.
+ * @template R The type of the return value.
+ */
+type BinaryOptionFunc<T1, T2, O extends AnyObject, R> = (
+  arg1: T1,
+  arg2: T2,
+  opts: O,
+) => R;
+
+/**
+ * Describes an empty tuple.
+ */
+export type Empty = Nonary;
+
+/**
+ * Describes a tuple with one element.
+ *
+ * @template T The type of the first element.
+ */
+export type Single<T> = Unary<T>;
+
+/**
+ * Describes a tuple with two elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ */
+export type Couple<T1, T2> = Binary<T1, T2>;
+
+/**
+ * Describes a tuple with three elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ * @template T3 The type of the third element.
+ */
+export type Triple<T1, T2, T3> = Ternary<T1, T2, T3>;
+
+/**
+ * Describes a tuple with four elements.
+ *
+ * @template T1 The type of the first element.
+ * @template T2 The type of the second element.
+ * @template T3 The type of the third element.
+ * @template T4 The type of the fourth element.
+ */
+export type Quadruple<T1, T2, T3, T4> = Quaternary<T1, T2, T3, T4>;
+
+/**
+ * Describes an action that takes `T` arguments, optionally followed by options of type `O`.
+ *
+ * This is used across kz code to help developers conform to style guidelines. This is obviously not enforced for other.
+ *
+ * This type is used with the `None`, `Single`, and `Couple` types. `Triple` and `Quadruple` are limited to follow integereleven guidelines.
+ *
+ * @template T The tuple of argument types.
+ * @template O The type of the options.
+ *
+ * @example
+ * ```ts
+ * import type { Action, Couple } from './type_aliases.ts';
+ *
+ * const action: Action<Couple<string, number>> = (arg1, arg2) => {
+ *    console.log(arg1, arg2);
+ * };
+ *
+ * action('Hellow, world!', 42);
+ * ```
+ */
+export type Action<
+  T extends unknown[],
+  O extends AnyObject = Record<string | number | symbol, never>,
+> = O extends Record<string | number | symbol, never>
+  ? T extends Nonary ? NullaryAction
+  : T extends Unary<infer T1> ? UnaryAction1<T1>
+  : T extends Binary<infer T1, infer T2> ? BinaryAction2<T1, T2>
+  : never
+  : T extends Nonary ? OptionAction<O>
+  : T extends Unary<infer T1> ? UnaryOptionAction<T1, O>
+  : T extends Binary<infer T1, infer T2> ? BinaryOptionAction<T1, T2, O>
+  : never;
+
+/**
+ * Describes a function that takes `T` arguments, optionally followed by options of type `O`.
+ *
+ * This is used across kz code to help developers conform to style guidelines. This is obviously not enforced for other.
+ *
+ * This type is used with the `None`, `Single`, and `Couple` types. `Triple` and `Quadruple` are limited to follow integereleven guidelines.
+ *
+ * @template T The tuple of argument types.
+ * @template R The type of the return value.
+ * @template O The type of the options.
+ *
+ * @example
+ * ```ts
+ * import type { Func, Single } from './type_aliases.ts';
+ *
+ * const func: Func<Single<number>, number> = (arg1) => {
+ *   return arg1 * 28;
+ * };
+ *
+ * const result = func(42);
+ *
+ * console.log(result); // 1176
+ * ```
+ */
+export type Func<
+  T extends unknown[],
+  R,
+  O extends AnyObject = Record<string | number | symbol, never>,
+> = O extends Record<string | number | symbol, never>
+  ? T extends Nonary ? NullaryFunc<R>
+  : T extends Unary<infer T1> ? UnaryFunc1<T1, R>
+  : T extends Binary<infer T1, infer T2> ? BinaryFunc2<T1, T2, R>
+  : never
+  : T extends Nonary ? OptionFunc<O, R>
+  : T extends Unary<infer T1> ? UnaryOptionFunc<T1, O, R>
+  : T extends Binary<infer T1, infer T2> ? BinaryOptionFunc<T1, T2, O, R>
+  : never;
