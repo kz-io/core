@@ -40,7 +40,32 @@ export enum ComparisonResult {
   Greater = 1,
 }
 
-export enum Position {
+/**
+ * Specifies the position of an item in a list.
+ * 
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { Position } from './enums.ts';
+ * 
+ * const items = [1, 2, 3];
+ * 
+ * function getItemPosition(item: number): Position {
+ *   if (item === items[0]) {
+ *     return Position.First;
+ *   } else if (item === items[items.length - 1]) {
+ *     return Position.Last;
+ *   }
+ * 
+ *   return Position.Middle;
+ * }
+ * 
+ * assertEquals(getItemPosition(1), Position.First);
+ * assertEquals(getItemPosition(2), Position.Middle);
+ * assertEquals(getItemPosition(3), Position.Last); 
+ * ```
+ */
+export enum ListPosition {
   /**
    * The first position in a list.
    */
@@ -57,6 +82,23 @@ export enum Position {
   Last = -1,
 }
 
+/**
+ * Specifies the parity of a value.
+ * 
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import { Parity } from './enums.ts';
+ * 
+ * const number = 3;
+ * 
+ * const parity = number % 2 === 0
+ *   ? Parity.Even
+ *   : Parity.Odd;
+ * 
+ * assertEquals(parity, Parity.Odd);
+ * ```
+ */
 export enum Parity {
   Even = 0,
   Odd = 1,

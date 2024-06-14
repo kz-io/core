@@ -506,6 +506,13 @@ export type Func<
   : never;
 
 /**
- * Describes a binary value.
+ * Describes a bit.
+ * 
+ * @example
+ * ```ts
+ * import type { Bit } from './type_aliases.ts';
+ * 
+ * const bit: Bit = 1;
+ * ```
  */
-export type BinaryValue = 0 | 1;
+export type Bit = 0 | 1;

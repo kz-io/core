@@ -7,7 +7,7 @@ import { describe, it } from '@std/testing/bdd';
 import { assertEquals, assertThrows } from '@std/assert';
 
 import { Index } from './mod.ts';
-import { Parity, Position } from '../types/mod.ts';
+import { Parity, ListPosition } from '../types/mod.ts';
 
 describe('Index', () => {
   describe('Index.end', () => {
@@ -135,13 +135,13 @@ describe('Index', () => {
   describe('position', () => {
     it('should return the position of the index in the list', () => {
       const index = Index.start(5);
-      assertEquals(index.position, Position.First);
+      assertEquals(index.position, ListPosition.First);
 
       const index2 = Index.of(2, 5);
-      assertEquals(index2.position, Position.Middle);
+      assertEquals(index2.position, ListPosition.Middle);
 
       const index3 = Index.end(5);
-      assertEquals(index3.position, Position.Last);
+      assertEquals(index3.position, ListPosition.Last);
     });
   });
 

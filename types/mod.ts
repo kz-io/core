@@ -14,7 +14,7 @@
  */
 
 export * as $IPrimitiveConvertible from './constants.ts';
-export { ComparisonResult, Parity, Position } from './enums.ts';
+export { ComparisonResult, Parity, ListPosition } from './enums.ts';
 
 export type {
   IHashable,
@@ -31,7 +31,7 @@ export type {
 export type {
   Action,
   AnyObject,
-  BinaryValue,
+  Bit,
   Codebase,
   Comparer,
   ComparerFn,
@@ -47,6 +47,7 @@ export type {
   KeyPrimitive,
   Quadruple,
   Scalar,
+
   Single,
   SoftwareOperation,
   SystemArchitecture,
