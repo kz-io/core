@@ -507,11 +507,11 @@ export type Func<
 
 /**
  * Describes a bit.
- * 
+ *
  * @example
  * ```ts
  * import type { Bit } from './type_aliases.ts';
- * 
+ *
  * const bit: Bit = 1;
  * ```
  */

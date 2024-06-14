@@ -42,27 +42,27 @@ export enum ComparisonResult {
 
 /**
  * Specifies the position of an item in a list.
- * 
+ *
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
- * import { Position } from './enums.ts';
- * 
+ * import { ListPosition } from './enums.ts';
+ *
  * const items = [1, 2, 3];
- * 
- * function getItemPosition(item: number): Position {
+ *
+ * function getItemPosition(item: number): ListPosition {
  *   if (item === items[0]) {
- *     return Position.First;
+ *     return ListPosition.First;
  *   } else if (item === items[items.length - 1]) {
- *     return Position.Last;
+ *     return ListPosition.Last;
  *   }
- * 
- *   return Position.Middle;
+ *
+ *   return ListPosition.Middle;
  * }
- * 
- * assertEquals(getItemPosition(1), Position.First);
- * assertEquals(getItemPosition(2), Position.Middle);
- * assertEquals(getItemPosition(3), Position.Last); 
+ *
+ * assertEquals(getItemPosition(1), ListPosition.First);
+ * assertEquals(getItemPosition(2), ListPosition.Middle);
+ * assertEquals(getItemPosition(3), ListPosition.Last);
  * ```
  */
 export enum ListPosition {
@@ -84,18 +84,18 @@ export enum ListPosition {
 
 /**
  * Specifies the parity of a value.
- * 
+ *
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
  * import { Parity } from './enums.ts';
- * 
+ *
  * const number = 3;
- * 
+ *
  * const parity = number % 2 === 0
  *   ? Parity.Even
  *   : Parity.Odd;
- * 
+ *
  * assertEquals(parity, Parity.Odd);
  * ```
  */

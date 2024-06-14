@@ -7,7 +7,7 @@ import { describe, it } from '@std/testing/bdd';
 import { assertEquals, assertThrows } from '@std/assert';
 
 import { Index } from './mod.ts';
-import { Parity, ListPosition } from '../types/mod.ts';
+import { ListPosition, Parity } from '../types/mod.ts';
 
 describe('Index', () => {
   describe('Index.end', () => {

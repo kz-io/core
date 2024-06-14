@@ -5,7 +5,7 @@
 
 import { AbstractPrimitiveConvertible } from './abstract_primitive_convertible.ts';
 import { RangeException } from '../exceptions/mod.ts';
-import { Parity, Position } from '../types/mod.ts';
+import { ListPosition, Parity } from '../types/mod.ts';
 
 /**
  * Represents an index in a list.
@@ -132,18 +132,18 @@ export class Index extends AbstractPrimitiveConvertible {
   /**
    * The position of the index in the list.
    */
-  public get position(): Position {
+  public get position(): ListPosition {
     const { index, listSize } = this;
 
     if (index === 0) {
-      return Position.First;
+      return ListPosition.First;
     }
 
     if (index === listSize - 1) {
-      return Position.Last;
+      return ListPosition.Last;
     }
 
-    return Position.Middle;
+    return ListPosition.Middle;
   }
 
   /**
@@ -152,7 +152,7 @@ export class Index extends AbstractPrimitiveConvertible {
   public get isLast(): boolean {
     const { position } = this;
 
-    return position === Position.Last;
+    return position === ListPosition.Last;
   }
 
   /**
@@ -161,7 +161,7 @@ export class Index extends AbstractPrimitiveConvertible {
   public get isFirst(): boolean {
     const { position } = this;
 
-    return position === Position.First;
+    return position === ListPosition.First;
   }
 
   /**
@@ -170,7 +170,7 @@ export class Index extends AbstractPrimitiveConvertible {
   public get isMiddle(): boolean {
     const { position } = this;
 
-    return position === Position.Middle;
+    return position === ListPosition.Middle;
   }
 
   /**
