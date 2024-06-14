@@ -13,8 +13,8 @@
  * @module types
  */
 
-export * as PrimitiveSymbols from './constants.ts';
-export { ComparisonResult } from './enums.ts';
+export * as $IPrimitiveConvertible from './constants.ts';
+export { ComparisonResult, Parity, Position } from './enums.ts';
 
 export type {
   IHashable,
@@ -29,19 +29,27 @@ export type {
 } from './interfaces.ts';
 
 export type {
+  Action,
   AnyObject,
+  BinaryValue,
   Codebase,
   Comparer,
   ComparerFn,
   Constructor,
   Converter,
   ConverterFn,
+  Couple,
   DecoratorTarget,
   Defined,
+  Empty,
+  Func,
   IndeterminateObject,
   KeyPrimitive,
+  Quadruple,
   Scalar,
+  Single,
   SoftwareOperation,
   SystemArchitecture,
   SystemOS,
+  Triple,
 } from './type_aliases.ts';

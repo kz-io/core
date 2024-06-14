@@ -504,3 +504,8 @@ export type Func<
   : T extends Unary<infer T1> ? UnaryOptionFunc<T1, O, R>
   : T extends Binary<infer T1, infer T2> ? BinaryOptionFunc<T1, T2, O, R>
   : never;
+
+/**
+ * Describes a binary value.
+ */
+export type BinaryValue = 0 | 1;

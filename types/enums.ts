@@ -39,3 +39,25 @@ export enum ComparisonResult {
    */
   Greater = 1,
 }
+
+export enum Position {
+  /**
+   * The first position in a list.
+   */
+  First = 0,
+
+  /**
+   * Anything not the first or last.
+   */
+  Middle = 1,
+
+  /**
+   * The last position in a list.
+   */
+  Last = -1,
+}
+
+export enum Parity {
+  Even = 0,
+  Odd = 1,
+}
