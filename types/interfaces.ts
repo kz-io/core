@@ -3,7 +3,6 @@
  * @file Interfaces for the module. For type aliases, see ./type_aliases.ts.
  */
 
-import * as IPC from './constants.ts';
 import { ComparisonResult } from './enums.ts';
 
 import type { Comparer, Converter } from './type_aliases.ts';
@@ -139,8 +138,6 @@ export interface TCloneable<T> {
  * ```ts
  * import { assertEquals } from '@std/assert';
  *
- * import * as IPC from './constants.ts';
- *
  * import type { IPrimitiveConvertible } from './interfaces.ts';
  *
  * const exampleSymbol = Symbol('example');
@@ -150,25 +147,25 @@ export interface TCloneable<T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this[IPC.toNumber]();
+ *       return this.toNumber();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public [IPC.toBoolean](): boolean {
+ *   public toBoolean(): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public [IPC.toNumber](): number {
+ *   public toNumber(): number {
  *     return this.age;
  *   }
  *
- *   public [IPC.toBigInt](): bigint {
+ *   public toBigInt(): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public [IPC.toSymbol](): symbol {
+ *   public toSymbol(): symbol {
  *     return exampleSymbol;
  *   }
  *
@@ -184,9 +181,9 @@ export interface TCloneable<T> {
  * const instance = new MyClass('Alice', 30);
  *
  * assertEquals(instance.toString(), 'Alice');
- * assertEquals(instance[IPC.toBoolean](), true);
- * assertEquals(instance[IPC.toBigInt](), BigInt(30));
- * assertEquals(instance[IPC.toSymbol](), exampleSymbol);
+ * assertEquals(instance.toBoolean(), true);
+ * assertEquals(instance.toBigInt(), BigInt(30));
+ * assertEquals(instance.toSymbol(), exampleSymbol);
  * ```
  */
 export interface IPrimitiveConvertible {
@@ -202,22 +199,22 @@ export interface IPrimitiveConvertible {
   /**
    * Converts the object to a boolean value.
    */
-  [IPC.toBoolean](): boolean;
+  toBoolean(): boolean;
 
   /**
    * Converts the object to a number value.
    */
-  [IPC.toNumber](): number;
+  toNumber(): number;
 
   /**
    * Converts the object to a bigint value.
    */
-  [IPC.toBigInt](): bigint;
+  toBigInt(): bigint;
 
   /**
    * Converts the object to a symbol value.
    */
-  [IPC.toSymbol](): symbol;
+  toSymbol(): symbol;
 
   /**
    * Converts the object to a string value.
@@ -282,8 +279,6 @@ export interface TConverter<F, T> {
  * ```ts
  * import { assertEquals, assertInstanceOf } from '@std/assert';
  *
- * import * as IPC from './constants.ts';
- *
  * import type { TConvertible } from './interfaces.ts';
  * import type { Converter } from './type_aliases.ts';
  *
@@ -307,25 +302,25 @@ export interface TConverter<F, T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this[IPC.toNumber]();
+ *       return this.toNumber();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public [IPC.toBoolean](): boolean {
+ *   public toBoolean(): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public [IPC.toNumber](): number {
+ *   public toNumber(): number {
  *     return this.age;
  *   }
  *
- *   public [IPC.toBigInt](): bigint {
+ *   public toBigInt(): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public [IPC.toSymbol](): symbol {
+ *   public toSymbol(): symbol {
  *     return exampleSymbol;
  *   }
  *

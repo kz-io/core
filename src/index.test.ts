@@ -51,7 +51,8 @@ describe('Index', () => {
   describe('toString', () => {
     it('should return a string representation of the index', () => {
       const index = Index.of(2, 5);
-      assertEquals(index.toString(), '40.00%');
+      assertEquals(index.toString(), '40%');
+      assertEquals(index.toString(2), '40.00%');
     });
   });
 

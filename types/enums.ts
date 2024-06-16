@@ -8,8 +8,7 @@
  *
  * @example
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import { ComparisonResult } from './enums.ts';
+ * import { ComparisonResult } from './mod.ts';
  *
  * const a = 1;
  * const b = 2;
@@ -20,7 +19,7 @@
  *   ? ComparisonResult.Greater
  *   : ComparisonResult.Equal;
  *
- * assertEquals(result, ComparisonResult.Lesser);
+ * console.log(result); // ComparisonResult.Lesser
  * ```
  */
 export enum ComparisonResult {
@@ -45,8 +44,7 @@ export enum ComparisonResult {
  *
  * @example
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import { ListPosition } from './enums.ts';
+ * import { ListPosition } from './mod.ts';
  *
  * const items = [1, 2, 3];
  *
@@ -60,9 +58,9 @@ export enum ComparisonResult {
  *   return ListPosition.Middle;
  * }
  *
- * assertEquals(getItemPosition(1), ListPosition.First);
- * assertEquals(getItemPosition(2), ListPosition.Middle);
- * assertEquals(getItemPosition(3), ListPosition.Last);
+ * console.log(getItemPosition(1)); // ListPosition.First
+ * console.log(getItemPosition(2)); // ListPosition.Middle
+ * console.log(getItemPosition(3)); // ListPosition.Last
  * ```
  */
 export enum ListPosition {
@@ -87,8 +85,7 @@ export enum ListPosition {
  *
  * @example
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import { Parity } from './enums.ts';
+ * import { Parity } from './mod.ts';
  *
  * const number = 3;
  *
@@ -96,7 +93,7 @@ export enum ListPosition {
  *   ? Parity.Even
  *   : Parity.Odd;
  *
- * assertEquals(parity, Parity.Odd);
+ * console.log(parity); // Parity.Odd
  * ```
  */
 export enum Parity {

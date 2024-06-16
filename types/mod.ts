@@ -13,7 +13,6 @@
  * @module types
  */
 
-export * as $IPrimitiveConvertible from './constants.ts';
 export { ComparisonResult, ListPosition, Parity } from './enums.ts';
 
 export type {

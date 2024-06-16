@@ -7,7 +7,6 @@ import { describe, it } from '@std/testing/bdd';
 import { assertEquals } from '@std/assert';
 
 import { AbstractPrimitiveConvertible } from './mod.ts';
-import { $IPrimitiveConvertible } from '../types/mod.ts';
 
 describe('AbstractPrimitiveConvertible', () => {
   class MyNumber extends AbstractPrimitiveConvertible {
@@ -40,11 +39,11 @@ describe('AbstractPrimitiveConvertible', () => {
     });
   });
 
-  describe('[$IPrimitiveConvertible.toNumber]', () => {
+  describe('toNumber', () => {
     it('should return a number representation of the object', () => {
       const myNumber = new MyNumber(42);
 
-      assertEquals(myNumber[$IPrimitiveConvertible.toNumber](), 42);
+      assertEquals(myNumber.toNumber(), 42);
     });
   });
 });

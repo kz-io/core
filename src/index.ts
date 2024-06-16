@@ -16,7 +16,7 @@ import { ListPosition, Parity } from '../types/mod.ts';
  *
  * const index = Index.of(2, 5);
  *
- * console.log(index.toString()); // 40.00%
+ * console.log(index.toString()); // 40%
  * console.log(index.valueOf()); // 2
  *
  * console.log(index.parity); // Parity.Even
@@ -24,6 +24,28 @@ import { ListPosition, Parity } from '../types/mod.ts';
  * ```
  */
 export class Index extends AbstractPrimitiveConvertible {
+  /**
+   * Returns a function that creates an `Index` instance representing the given index in a list.
+   *
+   * @param listSize The size of the list.
+   * @returns A function that creates an `Index` instance representing the given index in a list.
+   *
+   * @example
+   * ```ts
+   * import { Index } from './mod.ts';
+   *
+   * const listSize = 5;
+   * const createIndex = Index.createIndexer(listSize);
+   *
+   * const index = createIndex(2);
+   *
+   * console.log(index.toString()); // 40%
+   * ```
+   */
+  public static createIndexer(listSize: number): (index: number) => Index {
+    return (index: number) => Index.of(index, listSize);
+  }
+
   /**
    * Returns an `Index` instance representing the first index in a list.
    *
@@ -60,10 +82,19 @@ export class Index extends AbstractPrimitiveConvertible {
    *
    * @returns A string representation of the index.
    */
-  public toString(): string {
+  public toString(precision: number = 0): string {
+    if (precision < 0 || precision > 20) {
+      throw new RangeException({
+        lowerBound: 0,
+        upperBound: 20,
+        value: precision,
+        valueName: 'precision',
+      });
+    }
+
     const pct = (this.index / this.listSize) * 100;
 
-    return `${pct.toFixed(2)}%`;
+    return `${pct.toFixed(precision)}%`;
   }
 
   /**

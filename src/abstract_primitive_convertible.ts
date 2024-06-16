@@ -3,10 +3,7 @@
  * @file Exports the AbstractPrimitiveConvertible class.
  */
 
-import {
-  $IPrimitiveConvertible,
-  type IPrimitiveConvertible,
-} from '../types/mod.ts';
+import type { IPrimitiveConvertible } from '../types/mod.ts';
 
 /**
  * An abstract class that implements the `IPrimitiveConvertible` interface.
@@ -54,7 +51,7 @@ export abstract class AbstractPrimitiveConvertible
    *
    * @returns A number representation of the object.
    */
-  public [$IPrimitiveConvertible.toNumber](): number {
+  public toNumber(): number {
     const numberValue = this.valueOf();
 
     return numberValue;
@@ -68,7 +65,7 @@ export abstract class AbstractPrimitiveConvertible
    */
   public [Symbol.toPrimitive](hint: string): string | number {
     if (hint === 'number') {
-      return this[$IPrimitiveConvertible.toNumber]();
+      return this.toNumber();
     }
 
     return this.toString();
@@ -79,7 +76,7 @@ export abstract class AbstractPrimitiveConvertible
    *
    * @returns A boolean representation of the object.
    */
-  public [$IPrimitiveConvertible.toBoolean](): boolean {
+  public toBoolean(): boolean {
     const booleanValue = Boolean(this.valueOf());
 
     return booleanValue;
@@ -90,7 +87,7 @@ export abstract class AbstractPrimitiveConvertible
    *
    * @returns A symbol representation of the object.
    */
-  public [$IPrimitiveConvertible.toSymbol](): symbol {
+  public toSymbol(): symbol {
     const symbolValue = Symbol.for(this.toString());
 
     return symbolValue;
@@ -101,7 +98,7 @@ export abstract class AbstractPrimitiveConvertible
    *
    * @returns A bigint representation of the object.
    */
-  public [$IPrimitiveConvertible.toBigInt](): bigint {
+  public toBigInt(): bigint {
     const bigIntValue = BigInt(this.valueOf());
 
     return bigIntValue;
