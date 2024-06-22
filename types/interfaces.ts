@@ -3,7 +3,6 @@
  * @file Interfaces for the module. For type aliases, see ./type_aliases.ts.
  */
 
-import { toBigInt, toBoolean, toNumber, toSymbol } from './constants.ts';
 import { ComparisonResult } from './enums.ts';
 
 import type { Comparer, Converter } from './type_aliases.ts';
@@ -29,7 +28,7 @@ import type { Comparer, Converter } from './type_aliases.ts';
  *     const encodedName = encodeURIComponent(name);
  *     const encodedMessage = encodeURIComponent(message);
  *     const url =
- *       `https://example.com/help/${encodedName}?message=${encodedMessage}`;
+ *       `httIPC://example.com/help/${encodedName}?message=${encodedMessage}`;
  *
  *     return url;
  *   }
@@ -40,7 +39,7 @@ import type { Comparer, Converter } from './type_aliases.ts';
  * }
  *
  * const exception = new MyException('Something went wrong!');
- * const expected = 'https://example.com/help/Error?message=Something%20went%20wrong!';
+ * const expected = 'httIPC://example.com/help/Error?message=Something%20went%20wrong!';
  *
  * assertEquals(exception.helpUrl, expected);
  * ```
@@ -139,8 +138,6 @@ export interface TCloneable<T> {
  * ```ts
  * import { assertEquals } from '@std/assert';
  *
- * import * as PS from './constants.ts';
- *
  * import type { IPrimitiveConvertible } from './interfaces.ts';
  *
  * const exampleSymbol = Symbol('example');
@@ -150,25 +147,25 @@ export interface TCloneable<T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this[PS.toNumber]();
+ *       return this.toNumber();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public [PS.toBoolean](): boolean {
+ *   public toBoolean(): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public [PS.toNumber](): number {
+ *   public toNumber(): number {
  *     return this.age;
  *   }
  *
- *   public [PS.toBigInt](): bigint {
+ *   public toBigInt(): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public [PS.toSymbol](): symbol {
+ *   public toSymbol(): symbol {
  *     return exampleSymbol;
  *   }
  *
@@ -184,9 +181,9 @@ export interface TCloneable<T> {
  * const instance = new MyClass('Alice', 30);
  *
  * assertEquals(instance.toString(), 'Alice');
- * assertEquals(instance[PS.toBoolean](), true);
- * assertEquals(instance[PS.toBigInt](), BigInt(30));
- * assertEquals(instance[PS.toSymbol](), exampleSymbol);
+ * assertEquals(instance.toBoolean(), true);
+ * assertEquals(instance.toBigInt(), BigInt(30));
+ * assertEquals(instance.toSymbol(), exampleSymbol);
  * ```
  */
 export interface IPrimitiveConvertible {
@@ -202,22 +199,22 @@ export interface IPrimitiveConvertible {
   /**
    * Converts the object to a boolean value.
    */
-  [toBoolean](): boolean;
+  toBoolean(): boolean;
 
   /**
    * Converts the object to a number value.
    */
-  [toNumber](): number;
+  toNumber(): number;
 
   /**
    * Converts the object to a bigint value.
    */
-  [toBigInt](): bigint;
+  toBigInt(): bigint;
 
   /**
    * Converts the object to a symbol value.
    */
-  [toSymbol](): symbol;
+  toSymbol(): symbol;
 
   /**
    * Converts the object to a string value.
@@ -282,8 +279,6 @@ export interface TConverter<F, T> {
  * ```ts
  * import { assertEquals, assertInstanceOf } from '@std/assert';
  *
- * import * as PS from './constants.ts';
- *
  * import type { TConvertible } from './interfaces.ts';
  * import type { Converter } from './type_aliases.ts';
  *
@@ -307,25 +302,25 @@ export interface TConverter<F, T> {
  *
  *   public [Symbol.toPrimitive](hint: string): string | number {
  *     if (hint === 'number') {
- *       return this[PS.toNumber]();
+ *       return this.toNumber();
  *     }
  *
  *     return this.toString();
  *   }
  *
- *   public [PS.toBoolean](): boolean {
+ *   public toBoolean(): boolean {
  *     return this.age < 150;
  *   }
  *
- *   public [PS.toNumber](): number {
+ *   public toNumber(): number {
  *     return this.age;
  *   }
  *
- *   public [PS.toBigInt](): bigint {
+ *   public toBigInt(): bigint {
  *     return BigInt(this.age);
  *   }
  *
- *   public [PS.toSymbol](): symbol {
+ *   public toSymbol(): symbol {
  *     return exampleSymbol;
  *   }
  *
@@ -531,4 +526,51 @@ export interface TSortable<T> extends Iterable<T> {
    * @param reverse - Whether to reverse the sort.
    */
   sort(comparer: Comparer<T>, reverse: boolean): void;
+}
+
+/**
+ * Represents a version.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import type { ISemVerVersionDescriptor } from './interfaces.ts';
+ *
+ * const version: ISemVerVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ *   preRelease: 'alpha',
+ *   build: '20201225',
+ * };
+ *
+ * assertEquals(version.major, 1);
+ * assertEquals(version.minor, 2);
+ * ```
+ */
+export interface ISemVerVersionDescriptor {
+  /**
+   * The major version.
+   */
+  major: number;
+
+  /**
+   * The minor version.
+   */
+  minor: number;
+
+  /**
+   * The patch version.
+   */
+  patch: number;
+
+  /**
+   * The pre-release version.
+   */
+  preRelease?: string;
+
+  /**
+   * The build version.
+   */
+  build?: string;
 }

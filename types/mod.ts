@@ -13,13 +13,13 @@
  * @module types
  */
 
-export * as PrimitiveSymbols from './constants.ts';
-export { ComparisonResult } from './enums.ts';
+export { ComparisonResult, ListPosition, Parity } from './enums.ts';
 
 export type {
   IHashable,
   IHelpful,
   IPrimitiveConvertible,
+  ISemVerVersionDescriptor,
   TCloneable,
   TComparable,
   TComparer,
@@ -29,19 +29,27 @@ export type {
 } from './interfaces.ts';
 
 export type {
+  Action,
   AnyObject,
+  Bit,
   Codebase,
   Comparer,
   ComparerFn,
   Constructor,
   Converter,
   ConverterFn,
+  Couple,
   DecoratorTarget,
   Defined,
+  Empty,
+  Func,
   IndeterminateObject,
   KeyPrimitive,
+  Quadruple,
   Scalar,
+  Single,
   SoftwareOperation,
   SystemArchitecture,
   SystemOS,
+  Triple,
 } from './type_aliases.ts';

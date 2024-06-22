@@ -504,3 +504,15 @@ export type Func<
   : T extends Unary<infer T1> ? UnaryOptionFunc<T1, O, R>
   : T extends Binary<infer T1, infer T2> ? BinaryOptionFunc<T1, T2, O, R>
   : never;
+
+/**
+ * Describes a bit.
+ *
+ * @example
+ * ```ts
+ * import type { Bit } from './type_aliases.ts';
+ *
+ * const bit: Bit = 1;
+ * ```
+ */
+export type Bit = 0 | 1;

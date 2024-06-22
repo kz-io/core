@@ -6,9 +6,9 @@
 /**
  * The host for the i11n documentation site.
  */
-export const I11N_DOCS_HOST = 'https://docs.integereleven.com';
+export const I11N_DOCS_HOST = 'https://integereleven.com';
 
 /**
  * The path to the i11n exception explainer tool.
  */
-export const I11N_EX2_PATH = 'tools/ex2';
+export const I11N_EX2_PATH = 'open-source/tools/ex2';
