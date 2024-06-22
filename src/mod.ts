@@ -12,3 +12,4 @@ export { SemVerVersionComparer } from './sem_ver_version_comparer.ts';
 export { Index } from './index.ts';
 export { Range } from './range.ts';
 export { Version } from './version.ts';
+export { Random } from './random.ts';
