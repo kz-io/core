@@ -527,3 +527,50 @@ export interface TSortable<T> extends Iterable<T> {
    */
   sort(comparer: Comparer<T>, reverse: boolean): void;
 }
+
+/**
+ * Represents a version.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import type { ISemVerVersionDescriptor } from './interfaces.ts';
+ *
+ * const version: ISemVerVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ *   preRelease: 'alpha',
+ *   build: '20201225',
+ * };
+ *
+ * assertEquals(version.major, 1);
+ * assertEquals(version.minor, 2);
+ * ```
+ */
+export interface ISemVerVersionDescriptor {
+  /**
+   * The major version.
+   */
+  major: number;
+
+  /**
+   * The minor version.
+   */
+  minor: number;
+
+  /**
+   * The patch version.
+   */
+  patch: number;
+
+  /**
+   * The pre-release version.
+   */
+  preRelease?: string;
+
+  /**
+   * The build version.
+   */
+  build?: string;
+}

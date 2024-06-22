@@ -54,6 +54,20 @@ describe('Index', () => {
       assertEquals(index.toString(), '40%');
       assertEquals(index.toString(2), '40.00%');
     });
+
+    it('should throw a RangeException if the precision is less than 0', () => {
+      const index = Index.of(2, 5);
+      assertThrows(() => {
+        index.toString(-1);
+      });
+    });
+
+    it('should throw a RangeException if the precision is greater than 20', () => {
+      const index = Index.of(2, 5);
+      assertThrows(() => {
+        index.toString(21);
+      });
+    });
   });
 
   describe('valueOf', () => {
@@ -153,10 +167,20 @@ describe('Index', () => {
     });
   });
 
-  describe('Index.value', () => {
+  describe('Index.of', () => {
     it('should return the index', () => {
       const index = Index.of(2, 5);
       assertEquals(index.value, 2);
+    });
+  });
+
+  describe('Index.createIndexer', () => {
+    it('should return a function that creates an index', () => {
+      const createIndex = Index.createIndexer(5);
+      const index = createIndex(2);
+
+      assertEquals(index.value, 2);
+      assertEquals(index.length, 5);
     });
   });
 

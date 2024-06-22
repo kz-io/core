@@ -6,7 +6,7 @@
 import { describe, it } from '@std/testing/bdd';
 import { assertEquals } from '@std/assert';
 
-import { PropertyComparer } from './property_comparer.ts';
+import { PropertyComparer } from './mod.ts';
 
 import { ComparisonResult } from '../types/mod.ts';
 describe('PropertyComparer', () => {

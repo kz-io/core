@@ -19,6 +19,7 @@ export type {
   IHashable,
   IHelpful,
   IPrimitiveConvertible,
+  ISemVerVersionDescriptor,
   TCloneable,
   TComparable,
   TComparer,

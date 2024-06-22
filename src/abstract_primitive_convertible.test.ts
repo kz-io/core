@@ -4,7 +4,7 @@
  */
 
 import { describe, it } from '@std/testing/bdd';
-import { assertEquals } from '@std/assert';
+import { assert, assertEquals } from '@std/assert';
 
 import { AbstractPrimitiveConvertible } from './mod.ts';
 
@@ -44,6 +44,39 @@ describe('AbstractPrimitiveConvertible', () => {
       const myNumber = new MyNumber(42);
 
       assertEquals(myNumber.toNumber(), 42);
+    });
+  });
+
+  describe('toBigInt', () => {
+    it('should return a BigInt representation of the object', () => {
+      const myNumber = new MyNumber(42);
+
+      assertEquals(myNumber.toBigInt(), 42n);
+    });
+  });
+
+  describe('[Symbol.toPrimitive]', () => {
+    it('should return a primitive representation of the object', () => {
+      const myNumber = new MyNumber(42);
+
+      assertEquals(+myNumber, 42);
+      assertEquals(`${myNumber}`, '42');
+    });
+  });
+
+  describe('toBoolean', () => {
+    it('should return a boolean representation of the object', () => {
+      const myNumber = new MyNumber(42);
+
+      assertEquals(myNumber.toBoolean(), true);
+    });
+  });
+
+  describe('toSymbol', () => {
+    it('should return a symbol representation of the object', () => {
+      const myNumber = new MyNumber(42);
+
+      assert(typeof myNumber.toSymbol() === 'symbol');
     });
   });
 });

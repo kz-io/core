@@ -8,5 +8,7 @@
 
 export { AbstractPrimitiveConvertible } from './abstract_primitive_convertible.ts';
 export { PropertyComparer } from './property_comparer.ts';
+export { SemVerVersionComparer } from './sem_ver_version_comparer.ts';
 export { Index } from './index.ts';
 export { Range } from './range.ts';
+export { Version } from './version.ts';
