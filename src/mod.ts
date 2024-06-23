@@ -13,3 +13,4 @@ export { Index } from './index.ts';
 export { Range } from './range.ts';
 export { Version } from './version.ts';
 export { Random } from './random.ts';
+export { StringTemplate } from './string_template.ts';

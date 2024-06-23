@@ -4,6 +4,7 @@
   "exports": {
     ".": "./src/mod.ts",
     "./exceptions": "./exceptions/mod.ts",
+    "./utils": "./utils/mod.ts",
     "./types": "./types/mod.ts"
   },
   "compilerOptions": {
