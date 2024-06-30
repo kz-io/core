@@ -8,40 +8,20 @@ import { ComparisonResult } from './enums.ts';
 import type { Comparer, Converter } from './type_aliases.ts';
 
 /**
- * An interface providing a URL to an implemented object's help resource.
+ * Provides a consistent property providing a URL to help resources.
  *
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
  * import type { IHelpful } from './interfaces.ts';
  *
- * class MyException extends Error implements IHelpful {
- *   protected _helpUrl: string;
- *   constructor(message: string) {
- *     super(message);
+ * const helpfulObject: IHelpful = {
+ * 	 helpUrl: 'https://example.integereleven.com',
+ * };
  *
- *     this._helpUrl = this.generateHelpUrl();
- *   }
+ * const expected = 'http://example.integereleven.com';
  *
- *   protected generateHelpUrl(): string {
- *     const { name, message } = this;
- *     const encodedName = encodeURIComponent(name);
- *     const encodedMessage = encodeURIComponent(message);
- *     const url =
- *       `httIPC://example.com/help/${encodedName}?message=${encodedMessage}`;
- *
- *     return url;
- *   }
- *
- *   public get helpUrl(): string {
- *     return this._helpUrl;
- *   }
- * }
- *
- * const exception = new MyException('Something went wrong!');
- * const expected = 'httIPC://example.com/help/Error?message=Something%20went%20wrong!';
- *
- * assertEquals(exception.helpUrl, expected);
+ * assertEquals(helpfulObject.helpUrl, expected);
  * ```
  */
 export interface IHelpful {
@@ -52,7 +32,7 @@ export interface IHelpful {
 }
 
 /**
- * An interface providing a value representing the hash of an implemented object's data.
+ * Provides a method returning instance data hashed into a number.
  *
  * This interface is not meant to provide cryptographically secure hashing, but instead for
  * providing a unique value representing the data of an object.
@@ -94,30 +74,30 @@ export interface IHelpful {
  */
 export interface IHashable {
   /**
-   * The hash value representing the object's data.
+   * Return the hash of the object’s current value.
    */
   getHash(): number;
 }
 
 /**
- * An interface providing a method to clone an implemented object.
+ * Provides a mechanism for an instance to clone itself.
  *
- * @template T - The type of the object to clone. This is for utility and should always be the same as the implementing class.
+ * @template T - The type of object to clone. This is for utility and should always be the same as the implementing class.
  *
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
  * import type { TCloneable } from './interfaces.ts';
  *
- * class MyClass implements TCloneable<MyClass> {
+ * class User implements TCloneable<User> {
  *   constructor(public name: string, public age: number) {}
  *
- *   public clone(): MyClass {
- *     return new MyClass(this.name, this.age);
+ *   public clone(): User {
+ *     return new User(this.name, this.age);
  *   }
  * }
  *
- * const instance = new MyClass('Alice', 30);
+ * const instance = new User('Alice', 30);
  * const clone = instance.clone();
  *
  * assertEquals(clone.name, instance.name);
@@ -126,109 +106,63 @@ export interface IHashable {
  */
 export interface TCloneable<T> {
   /**
-   * Clones the object.
+   * Returns a cloned version of the instance.
    */
   clone(): T;
 }
 
 /**
- * An interface providing methods to convert an implemented object to primitive value types.
+ * Describes a base kz object.
+ *
+ * @template T - The type of the object's value.
  *
  * @example
  * ```ts
- * import { assertEquals } from '@std/assert';
+ * import type { TBase } from './interfaces.ts';
  *
- * import type { IPrimitiveConvertible } from './interfaces.ts';
+ * const obj: TBase<number> = {
+ * 	 [Symbol.toPrimitive](hint: string): string | number {
+ * 	 	 if (hint === 'number') {
+ * 	 	 	 return this.valueOf();
+ * 	 	 }
  *
- * const exampleSymbol = Symbol('example');
+ * 	 	 return this.toString();
+ * 	 },
+ * 	 toString() {
+ * 	 	 return `${this.valueOf()}`;
+ * 	 },
+ * 	 valueOf() {
+ * 	 	 return 42;
+ * 	 },
+ * };
  *
- * class MyClass implements IPrimitiveConvertible {
- *   constructor(public name: string, public age: number) {}
- *
- *   public [Symbol.toPrimitive](hint: string): string | number {
- *     if (hint === 'number') {
- *       return this.toNumber();
- *     }
- *
- *     return this.toString();
- *   }
- *
- *   public toBoolean(): boolean {
- *     return this.age < 150;
- *   }
- *
- *   public toNumber(): number {
- *     return this.age;
- *   }
- *
- *   public toBigInt(): bigint {
- *     return BigInt(this.age);
- *   }
- *
- *   public toSymbol(): symbol {
- *     return exampleSymbol;
- *   }
- *
- *   public toString(): string {
- *     return this.name;
- *   }
- *
- *   public valueOf(): number {
- *     return this.age;
- *   }
- * }
- *
- * const instance = new MyClass('Alice', 30);
- *
- * assertEquals(instance.toString(), 'Alice');
- * assertEquals(instance.toBoolean(), true);
- * assertEquals(instance.toBigInt(), BigInt(30));
- * assertEquals(instance.toSymbol(), exampleSymbol);
+ * const numValue = +obj;
+ * const strValue = `${obj}`;
+ * const tValue = obj.valueOf();
  * ```
  */
-export interface IPrimitiveConvertible {
+export interface TBase<T> {
   /**
-   * Converts the object to a primitive value.
+   * Returns a primitive value representing the object’s value, either a `string` or `number`, depending on the hint.
    *
-   * This is rarely called directly, but is used by JavaScript when converting an object to a primitive value.
-   *
-   * @param hint - The hint for the conversion.
+   * @param hint The type of primitive value to return.
+   * @returns A `string` if hint is `'string'` or `'default'`, otherwise a `number`.
    */
   [Symbol.toPrimitive](hint: string): string | number;
 
   /**
-   * Converts the object to a boolean value.
-   */
-  toBoolean(): boolean;
-
-  /**
-   * Converts the object to a number value.
-   */
-  toNumber(): number;
-
-  /**
-   * Converts the object to a bigint value.
-   */
-  toBigInt(): bigint;
-
-  /**
-   * Converts the object to a symbol value.
-   */
-  toSymbol(): symbol;
-
-  /**
-   * Converts the object to a string value.
+   * Returns the string representation of the object.
    */
   toString(): string;
 
   /**
-   * Converts the object to a number value.
+   * Returns the T value representation of the object.
    */
-  valueOf(): number;
+  valueOf(): T;
 }
 
 /**
- * An interface providing a method to convert a value from one type to another.
+ * Provides a method to convert a value from one type to another.
  *
  * @template F - The type to convert from.
  * @template T - The type to convert to.
@@ -238,27 +172,15 @@ export interface IPrimitiveConvertible {
  * import { assertEquals, assertInstanceOf } from '@std/assert';
  * import type { TConverter } from './interfaces.ts';
  *
- * class MyClass {
- *   constructor(public name: string, public age: number) {}
- * }
- *
- * class MyOtherClass {
- *   constructor(public name: string, public age: number) {}
- * }
- *
- * const converter: TConverter<MyClass, MyOtherClass> = {
- *   convert(instance: MyClass): MyOtherClass {
- *     return new MyOtherClass(instance.name, instance.age);
- *   }
+ * const converter: TConverter<string, number> = {
+ * 	 convert(value: string): number {
+ * 	 	 return parseInt(value);
+ * 	 },
  * };
  *
- * const instance = new MyClass('Alice', 30);
- * const converted = converter.convert(instance);
+ * const result = converter.convert('42');
  *
- * assertEquals(converted.name, instance.name);
- * assertEquals(converted.age, instance.age);
- * assertInstanceOf(instance, MyClass);
- * assertInstanceOf(converted, MyOtherClass);
+ * assertEquals(result, 42);
  * ```
  */
 export interface TConverter<F, T> {
@@ -271,123 +193,88 @@ export interface TConverter<F, T> {
 }
 
 /**
- * An interface providing a method to convert a value from one type to another, either using a named conversion or a {@link Converter}.
+ * Provides a method to convert a value from one type to another using a named conversion or a {@link Converter}.
  *
- * @template F - The mapping of conversion names to the types they convert to.
+ * @template T - The type of the object's value, for {@link TBase}.
+ * @template F - The map of named conversion keys to the types they convert to.
  *
  * @example
  * ```ts
- * import { assertEquals, assertInstanceOf } from '@std/assert';
- *
+ * import { assertEquals } from '@std/assert';
  * import type { TConvertible } from './interfaces.ts';
  * import type { Converter } from './type_aliases.ts';
  *
- * class MyOtherClass {
- *   constructor(public name: string, public age: number) {}
+ * interface ConvertibleMap {
+ * 	'symbol': symbol,
+ * 	'other': { id: string },
  * }
  *
- * class MyOtherOtherClass {
- *   constructor(public name: string, public age: number) {}
- * }
+ * const obj: TConvertible<number, ConvertibleMap> = {
+ * 	 [Symbol.toPrimitive](hint: string): string | number {
+ * 	 	 if (hint === 'number') {
+ * 	 	 	 return this.valueOf();
+ * 	 	 }
  *
- * interface OtherClasses {
- *   other: MyOtherClass;
- *   other2: MyOtherOtherClass;
- * }
+ * 	 	 return this.toString();
+ * 	 },
+ * 	 toString() {
+ * 	 	 return `${this.valueOf()}`;
+ * 	 },
+ * 	 valueOf() {
+ * 	 	 return 42;
+ * 	 },
+ * 	 convertTo<K extends keyof ConvertibleMap>(t: K): ConvertibleMap[K] {
+ * 	 	 const value = this.valueOf();
+ * 	 	 const id = `${value}`;
  *
- * const exampleSymbol = Symbol('example');
+ * 	 	 if (t === 'symbol') {
+ * 	 	 	 return Symbol(id) as ConvertibleMap[K];
+ * 	 	 }
  *
- * class MyClass implements TConvertible<OtherClasses> {
- *   constructor(public name: string, public age: number) {}
+ * 	 	 return {id} as ConvertibleMap[K];
+ * 	 },
+ * 	 convert<T>(converter: Converter<number, T>): T {
+ * 	 	 const value = this.valueOf();
  *
- *   public [Symbol.toPrimitive](hint: string): string | number {
- *     if (hint === 'number') {
- *       return this.toNumber();
- *     }
+ * 	 	 if (typeof converter === 'function') {
+ * 	 	 	 return converter(value);
+ * 	 	 }
  *
- *     return this.toString();
- *   }
+ * 	 	 return converter.convert(value);
+ * 	 }
+ * };
  *
- *   public toBoolean(): boolean {
- *     return this.age < 150;
- *   }
- *
- *   public toNumber(): number {
- *     return this.age;
- *   }
- *
- *   public toBigInt(): bigint {
- *     return BigInt(this.age);
- *   }
- *
- *   public toSymbol(): symbol {
- *     return exampleSymbol;
- *   }
- *
- *   public toString(): string {
- *     return this.name;
- *   }
- *
- *   public valueOf(): number {
- *     return this.age;
- *   }
- *
- *   convert<T>(converter: Converter<this, T>): T {
- *     if (typeof converter === 'function') {
- *       return converter(this);
- *     }
- *
- *     return converter.convert(this);
- *   }
- *
- *   convertTo<S extends keyof OtherClasses>(type: S): OtherClasses[S] {
- *     switch (type) {
- *       case 'other':
- *         return new MyOtherClass(this.name, this.age) as OtherClasses[S];
- *       default:
- *         return new MyOtherOtherClass(this.name, this.age) as OtherClasses[S];
- *     }
- *   }
- * }
- *
- * const instance = new MyClass('Alice', 30);
- * const converted = instance.convertTo('other');
- * const converted2 = instance.convertTo('other2');
- * const convertedWithConverter = instance.convert<string>((instance: MyClass) => {
- *   return `${instance.name} is ${instance.age} years old.`;
- * });
- *
- * assertEquals(converted.name, instance.name);
- * assertInstanceOf(converted, MyOtherClass);
- * assertEquals(converted2.name, instance.name);
- * assertInstanceOf(converted2, MyOtherOtherClass);
- * assertEquals(convertedWithConverter, 'Alice is 30 years old.');
+ * const symValue = obj.convertTo('symbol');
+ * const otherValue = obj.convertTo('other');
+ * const result = obj.convert(val => val.toString());
  * ```
  */
 // deno-lint-ignore no-explicit-any
-export interface TConvertible<T extends Record<string, any>>
-  extends IPrimitiveConvertible {
+export interface TConvertible<T, M extends Record<string, any>>
+  extends TBase<T> {
   /**
-   * Converts the object to a named conversion type.
+   * Converts the instance value to a named conversion type.
    *
-   * @template S - The named conversion names.
+   * @template K - The named conversion types.
    *
-   * @param type The named conversion to use.
+   * @param toType The named conversion to use.
    */
-  convertTo<S extends keyof T>(type: S): T[S];
+  convertTo<K extends keyof M>(toType: K): M[K];
 
   /**
-   * Converts the object to a value of the specified type using a {@link Converter}.
+   * Converts the instance value to type `T` type using a {@link Converter}.
    *
-   * @param converter The converter to use.
+   * @template C - The type to convert the instance value to.
+   *
+   * @param converter The converter to use to convert the instance value to `T`.
    */
-  convert<T>(converter: Converter<this, T>): T;
+  convert<C>(converter: Converter<T, C>): C;
 }
 
 /**
- * Describes an object that can be compared to another object.
+ * Provides a mechanism to compare the current class instance to another instance.
  *
- * @template T - The type of the object to compare.
+ * @template T - The value type being compared. Usually the class type itself.
  *
  * @example
  * ```ts
@@ -395,44 +282,42 @@ export interface TConvertible<T extends Record<string, any>>
  * import { ComparisonResult } from './enums.ts';
  * import type { TComparable } from './interfaces.ts';
  *
- * class ComparableNumber implements TComparable<ComparableNumber> {
- *   constructor(public readonly value: number) {}
+ * class Example implements TComparable<Example> {
+ * 	 constructor(protected name: string){ }
  *
- *   compare(other: ComparableNumber, reverse = false): ComparisonResult {
- *     const [a, b] = reverse
- *       ? [other.value, this.value]
- *       : [this.value, other.value];
+ * 	 compareTo(other: Example, reverse = false): ComparisonResult {
+ * 	 	 const result = this.name > other.name
+ * 	 	 	 ? (reverse ? ComparisonResult.Lesser : ComparisonResult.Greater)
+ * 	 	 	 : this.name < other.name
+ * 	 	 	 	 ? (reverse ? ComparisonResult.Greater : ComparisonResult.Lesser)
+ * 	 	 	 	 : ComparisonResult.Equal;
  *
- *     return a < b
- *       ? ComparisonResult.Lesser
- *       : a > b
- *       ? ComparisonResult.Greater
- *       : ComparisonResult.Equal;
- *   }
+ * 	 	 return result
+ * 	 }
  * }
  *
- * const a = new ComparableNumber(1);
- * const b = new ComparableNumber(2);
+ * const exA = new Example('apple');
+ * const exB = new Example('banana');
  *
- * assertEquals(a.compare(b), ComparisonResult.Lesser);
+ * assertEquals(exA.compareTo(exB), ComparisonResult.Lesser);
  * ```
  */
 export interface TComparable<T> {
   /**
-   * Compares this object to another object.
+   * Compare the current instance to another instance, optionally specifying the direction of the equality check.
    *
-   * @param other - The object to compare to.
+   * @param other - The other instance to check the current instance against.
    * @param reverse - Whether to reverse the comparison.
    *
    * @returns The comparison result.
    */
-  compare(other: T, reverse: boolean): ComparisonResult;
+  compareTo(other: T, reverse: boolean): ComparisonResult;
 }
 
 /**
- * Describes an object that can compare two objects.
+ * Provides a mechanism to compare two values of the same type.
  *
- * @template T - The type of the objects to compare.
+ * @template T - The types of values this comparer can operate on.
  *
  * @example
  * ```ts
@@ -440,38 +325,38 @@ export interface TComparable<T> {
  * import { ComparisonResult } from './enums.ts';
  * import type { TComparer } from './interfaces.ts';
  *
- * const comparer: TComparer<number> = {
- *   compare(a, b, reverse): ComparisonResult {
- *     const [x, y] = reverse ? [b, a] : [a, b];
- *     return x < y
- *       ? ComparisonResult.Lesser
- *       : x > y
- *       ? ComparisonResult.Greater
- *       : ComparisonResult.Equal;
- *   },
+ *  const comparer: TComparer<number> = {
+ * 	 compare(a: number, b: number, reverse = false) {
+ * 	 	 const result = a > b
+ * 	 	 	 ? (reverse ? ComparisonResult.Lesser : ComparisonResult.Greater)
+ * 	 	 	 : a < b
+ * 	 	 	 	 ? (reverse ? ComparisonResult.Greater : ComparisonResult.Lesser)
+ * 	 	 	 	 : ComparisonResult.Equal;
+ *
+ * 	 	 return result;
+ * 	 }
  * };
  *
- * const a = 1;
- * const b = 2;
- *
- * assertEquals(comparer.compare(a, b, false), ComparisonResult.Lesser);
+ * assertEquals(comparer.compare(1, 3), ComparisonResult.Lesser);
+ * assertEquals(comparer.compare(1, 3, true), ComparisonResult.Greater);
+ * assertEquals(comparer.compare(1, 1), ComparisonResult.Equal);
  * ```
  */
 export interface TComparer<T> {
   /**
-   * Compares two objects.
+   * Compare two values for equality, optionally reversing the comparison.
    *
-   * @param a The first object to compare.
-   * @param b The second object to compare.
+   * @param a The first value of the comparison.
+   * @param b The second value of the comparison.
    * @param reverse Whether to reverse the comparison.
    */
-  compare(a: T, b: T, reverse: boolean): ComparisonResult;
+  compare(a: T, b: T, reverse?: boolean): ComparisonResult;
 }
 
 /**
- * Describes an object that can be sorted.
+ * Provides a mechanism to sort instance properties or indices.
  *
- * @template T - The interal type of the object to sort.
+ * @template T - The value type being sorted.
  *
  * @example
  * ```ts
@@ -520,57 +405,54 @@ export interface TComparer<T> {
  */
 export interface TSortable<T> extends Iterable<T> {
   /**
-   * Sorts the object.
+   * Sort instance properties or indices using a {@link Comparer}.
    *
-   * @param comparer - The comparer to use.
-   * @param reverse - Whether to reverse the sort.
+   * @param comparer - The comparer used to sort the instance properties or indices.
+   * @param reverse - Whether to reverse sort the instance properties or indices.
    */
   sort(comparer: Comparer<T>, reverse: boolean): void;
 }
 
 /**
- * Represents a version.
+ * Describes a semantic versioning version.
  *
  * @example
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import type { ISemVerVersionDescriptor } from './interfaces.ts';
+ * import type { IVersionDescriptor } from './interfaces.ts';
  *
- * const version: ISemVerVersionDescriptor = {
- *   major: 1,
- *   minor: 2,
- *   patch: 3,
- *   preRelease: 'alpha',
- *   build: '20201225',
+ * const currentBuild: IVersionDescriptor = {
+ * 	 major: 1,
+ * 	 minor: 2,
+ * 	 patch: 55,
+ * 	 build: 'pancake-9458',
  * };
- *
- * assertEquals(version.major, 1);
- * assertEquals(version.minor, 2);
  * ```
+ *
+ * @see {@link https://semver.org|Semantic Versioning}
  */
-export interface ISemVerVersionDescriptor {
+export interface IVersionDescriptor {
   /**
-   * The major version.
+   * The major version of the version.
    */
   major: number;
 
   /**
-   * The minor version.
+   * The minor version of the version.
    */
   minor: number;
 
   /**
-   * The patch version.
+   * The patch version of the version.
    */
   patch: number;
 
   /**
-   * The pre-release version.
+   * The pre-release of the version.
    */
   preRelease?: string;
 
   /**
-   * The build version.
+   * The build of the version.
    */
   build?: string;
 }

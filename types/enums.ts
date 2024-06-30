@@ -8,6 +8,7 @@
  *
  * @example
  * ```ts
+ * import { assertEquals } from '@std/assert';
  * import { ComparisonResult } from './mod.ts';
  *
  * const a = 1;
@@ -16,25 +17,25 @@
  * const result = a < b
  *   ? ComparisonResult.Lesser
  *   : a > b
- *   ? ComparisonResult.Greater
- *   : ComparisonResult.Equal;
+ *     ? ComparisonResult.Greater
+ *     : ComparisonResult.Equal;
  *
- * console.log(result); // ComparisonResult.Lesser
+ * assertEquals(result, ComparisonResult.Lesser);
  * ```
  */
 export enum ComparisonResult {
   /**
-   * First value is less than the second value.
+   * The first value is less than the second value.
    */
   Lesser = -1,
 
   /**
-   * Two values are equal.
+   * The two values are equal.
    */
   Equal = 0,
 
   /**
-   * First value is greater than the second value.
+   * The first value is greater than the second value.
    */
   Greater = 1,
 }
@@ -44,6 +45,7 @@ export enum ComparisonResult {
  *
  * @example
  * ```ts
+ * import { assertEquals } from '@std/assert';
  * import { ListPosition } from './mod.ts';
  *
  * const items = [1, 2, 3];
@@ -58,9 +60,9 @@ export enum ComparisonResult {
  *   return ListPosition.Middle;
  * }
  *
- * console.log(getItemPosition(1)); // ListPosition.First
- * console.log(getItemPosition(2)); // ListPosition.Middle
- * console.log(getItemPosition(3)); // ListPosition.Last
+ * assertEquals(getItemPosition(1), ListPosition.First);
+ * assertEquals(getItemPosition(2), ListPosition.Middle);
+ * assertEquals(getItemPosition(3), ListPosition.Last);
  * ```
  */
 export enum ListPosition {
@@ -70,7 +72,7 @@ export enum ListPosition {
   First = 0,
 
   /**
-   * Anything not the first or last.
+   * Any item in a list that is not the first or last.
    */
   Middle = 1,
 
@@ -85,6 +87,7 @@ export enum ListPosition {
  *
  * @example
  * ```ts
+ * import { assertEquals } from '@std/assert';
  * import { Parity } from './mod.ts';
  *
  * const number = 3;
@@ -93,10 +96,17 @@ export enum ListPosition {
  *   ? Parity.Even
  *   : Parity.Odd;
  *
- * console.log(parity); // Parity.Odd
+ * assertEquals(parity, Parity.Odd);
  * ```
  */
 export enum Parity {
+  /**
+   * Value is even.
+   */
   Even = 0,
+
+  /**
+   * Value is odd.
+   */
   Odd = 1,
 }

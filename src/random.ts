@@ -3,31 +3,40 @@
  * @file Exports the Random class.
  */
 
+import { Quadruple } from '../types/mod.ts';
 import { createSeed, getRandomSeedValue } from './_internal/mod.ts';
 
 /**
- * A class representing a random number generator.
+ * A class providing random number generation.
  */
 export class Random {
   /**
-   * Creates a seed.
+   * Creates a seed for random number generation, optionally specifying a seed value.
    *
-   * @param seedValue The seed value.
+   * Using a custom seed value rather than a generated one will result in consistent
+   * results when used. This is usually only used for testing, though developers
+   * may find use for it in production environments.
+   *
+   * @param seedValue A specified seed value for generating expected seed hashes.
    * @returns The seed hash.
    */
   public static createSeed(
     seedValue: string = getRandomSeedValue(),
-  ): [number, number, number, number] {
+  ): Quadruple<number> {
     return createSeed(seedValue);
   }
 
   /**
-   * Creates a new `Random` instance.
+   * Creates a `Random` instance, optionally with a custom seed.
    *
-   * @param seed The seed.
+   * Using a custom seed value rather than a generated one will result in
+   * consistent results when used. This is usually only used for testing,
+   * though developers may find use for it in production environments.
+   *
+   * @param seed A specified seed for generating expected hashes.
    */
   constructor(
-    protected seed: [number, number, number, number] = Random.createSeed(),
+    protected seed: Quadruple<number> = Random.createSeed(),
   ) {}
 
   /**
@@ -61,23 +70,57 @@ export class Random {
    * Returns the next random number.
    *
    * @returns The next random number.
+   *
+   * @example
+   * ```ts
+   * import { Random } from './random.ts';
+   *
+   * const random = new Random();
+   *
+   * const n1 = random.next();
+   * const n2 = random.next();
+   *
+   * console.log(n1 !== n2); // true
+   * ```
    */
   public next(): number;
 
   /**
-   * Returns the next random number between 0 and a maximum value.
+   * Returns the next random number between 0 and a maximum value (exclusive).
    *
-   * @param max The maximum value.
-   * @returns The next random number between 0 and a maximum value.
+   * @param max The upper bound of the random number.
+   * @returns The next random number between 0 and a maximum value (exclusive).
+   *
+   * @example
+   * ```ts
+   * import { Random } from './random.ts';
+   *
+   * const random = new Random();
+   *
+   * const n1 = random.next(10);
+   *
+   * console.log(n1 < 10 && n1 > 0); // true
+   * ```
    */
   public next(max: number): number;
 
   /**
-   * Generates the next random number between a minimum and maximum value.
+   * Returns the next random number between a minimum and maximum value (exclusive).
    *
-   * @param min The minimum value.
-   * @param max The maximum value.
-   * @returns The next random number between a minimum and maximum value.
+   * @param min The lower bound of the random number.
+   * @param max The upper bound of the random number.
+   * @returns The next random number between a minimum and maximum value (exclusive).
+   *
+   * @example
+   * ```ts
+   * import { Random } from './random.ts';
+   *
+   * const random = new Random();
+   *
+   * const n1 = random.next(5, 10);
+   *
+   * console.log(n1 < 10 && n1 > 5); // true
+   * ```
    */
   public next(min: number, max: number): number;
   public next(min?: number, max?: number): number {
@@ -95,12 +138,25 @@ export class Random {
   }
 
   /**
-   * Returns the next random bytes.
+   * Returns the next random bytes, optionally of a specific length.
    *
-   * @param length The length of the bytes.
+   * @param length The number of random bytes to return.
    * @returns The next random bytes.
+   *
+   * @example
+   * ```ts
+   * import { Random } from './random.ts';
+   *
+   * const random = new Random();
+   *
+   * const n1 = random.nextBytes();
+   * const n2 = random.nextBytes(4);
+   *
+   * console.log(n1.length); // 8
+   * console.log(n2.length); // 4
+   * ```
    */
-  public nextBytes(length: number): Uint8Array {
+  public nextBytes(length: number = 8): Uint8Array {
     const bytes = new Uint8Array(length);
 
     for (let i = 0; i < length; i++) {

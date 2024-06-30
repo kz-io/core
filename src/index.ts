@@ -3,27 +3,53 @@
  * @file Exports the Index class.
  */
 
-import { AbstractPrimitiveConvertible } from './abstract_primitive_convertible.ts';
 import { RangeException } from '../exceptions/mod.ts';
+import { AbstractConvertible } from './abstract_convertible.ts';
 import { ListPosition, Parity } from '../types/mod.ts';
 
 /**
- * Represents an index in a list.
+ * Describes the named conversions for the Index class.
+ */
+export type IndexConversionMap = {
+  /**
+   * Converts the `Index` to a trimmed 4-digit precision percentage of the `Index`.
+   */
+  percent: string;
+
+  /**
+   * Converts the `Index` to a `number`, the `valueOf` the `Index`.
+   */
+  number: number;
+};
+
+/**
+ * A class representing an index of an item in a list.
  *
  * @example
  * ```ts
  * import { Index } from './mod.ts';
+ * const items = ['Hello', 'World', '!'];
+ * const indexer = Index.createIndexer(items.length);
  *
- * const index = Index.of(2, 5);
+ * const formattedItems = items.map((item, i) => {
+ * 	 const index = indexer(i);
  *
- * console.log(index.toString()); // 40%
- * console.log(index.valueOf()); // 2
+ *   return index.isFirst
+ *  	 ? `${item} is first`
+ *  	 : index.isLast
+ *  	   ? `${item} is last`
+ *  		 : `${item} is in the middle`;
+ * });
  *
- * console.log(index.parity); // Parity.Even
- * console.log(index.isEven); // true
+ * const lines = formattedItems.join('\n');
+ *
+ * console.log(lines);
+ * // ^ Hello is first
+ * //   World is in the middle
+ * //   ! is last
  * ```
  */
-export class Index extends AbstractPrimitiveConvertible {
+export class Index extends AbstractConvertible<number, IndexConversionMap> {
   /**
    * Returns a function that creates an `Index` instance representing the given index in a list.
    *
@@ -34,12 +60,11 @@ export class Index extends AbstractPrimitiveConvertible {
    * ```ts
    * import { Index } from './mod.ts';
    *
-   * const listSize = 5;
-   * const createIndex = Index.createIndexer(listSize);
+   * const indexer = Index.createIndexer(20);
+   * const index = indexer(5);
    *
-   * const index = createIndex(2);
-   *
-   * console.log(index.toString()); // 40%
+   * console.log(index.value);  // 5
+   * console.log(index.length); // 20
    * ```
    */
   public static createIndexer(listSize: number): (index: number) => Index {
@@ -47,10 +72,20 @@ export class Index extends AbstractPrimitiveConvertible {
   }
 
   /**
-   * Returns an `Index` instance representing the first index in a list.
+   * Returns an `Index` instance representing the last index in a list.
    *
    * @param listSize The size of the list.
    * @returns An `Index` instance representing the last index in a list.
+   *
+   * @example
+   * ```ts
+   * import { Index } from './mod.ts';
+   *
+   * const index = Index.end(10);
+   *
+   * console.log(index.value);  // 9
+   * console.log(index.length); // 10
+   * ```
    */
   public static end(listSize: number): Index {
     return Index.of(listSize - 1, listSize);
@@ -61,6 +96,16 @@ export class Index extends AbstractPrimitiveConvertible {
    *
    * @param listSize The size of the list.
    * @returns An `Index` instance representing the last index in a list.
+   *
+   * @example
+   * ```ts
+   * import { Index } from './mod.ts';
+   *
+   * const index = Index.start(10);
+   *
+   * console.log(index.value);  // 0
+   * console.log(index.length); // 10
+   * ```
    */
   public static start(listSize: number): Index {
     return Index.of(0, listSize);
@@ -72,15 +117,25 @@ export class Index extends AbstractPrimitiveConvertible {
    * @param index The index.
    * @param listSize The size of the list.
    * @returns An `Index` instance representing the given index in a list.
+   *
+   * @example
+   * ```ts
+   * import { Index } from './mod.ts';
+   *
+   * const index = Index.of(5, 10);
+   *
+   * console.log(index.value);  // 5
+   * console.log(index.length); // 10
+   * ```
    */
   public static of(index: number, listSize: number): Index {
     return new Index(index, listSize);
   }
 
   /**
-   * Returns a string representation of the index.
+   * Returns a string representation of the `Index`.
    *
-   * @returns A string representation of the index.
+   * @returns A string representation of the `Index`.
    */
   public toString(precision: number = 0): string {
     if (precision < 0 || precision > 20) {
@@ -98,9 +153,9 @@ export class Index extends AbstractPrimitiveConvertible {
   }
 
   /**
-   * Returns the value of the index.
+   * Returns the value of the `Index`.
    *
-   * @returns The value of the index.
+   * @returns The value of the `Index`.
    */
   public valueOf(): number {
     return this.index;
@@ -108,7 +163,8 @@ export class Index extends AbstractPrimitiveConvertible {
 
   /**
    * Creates a new `Index` instance representing the given index in a list.
-   * @param index The index.
+   *
+   * @param index The index in the list.
    * @param listSize The size of the list.
    */
   constructor(protected index: number, protected listSize: number) {
@@ -197,6 +253,8 @@ export class Index extends AbstractPrimitiveConvertible {
 
   /**
    * Whether the index is in the middle of the list.
+   *
+   * e.g. not first or last.
    */
   public get isMiddle(): boolean {
     const { position } = this;
@@ -227,5 +285,51 @@ export class Index extends AbstractPrimitiveConvertible {
    */
   public get length(): number {
     return this.listSize;
+  }
+
+  /**
+   * Returns a primitive value representing the object value, either a `string` or `number`, depending on the hint.
+   *
+   * @param hint The type of primitive value to return.
+   * @returns Returns a `string` if hint is `'string'` or `'default'`, otherwise a `number`.
+   */
+  [Symbol.toPrimitive](hint: string): string | number {
+    if (hint === 'number') {
+      return this.valueOf();
+    }
+
+    return this.toString();
+  }
+
+  /**
+   * Converts the instance value to a named conversion type.
+   *
+   * @param t The named conversion types.
+   * @returns The converted value.
+   *
+   * @see {@link IndexConversionMap}.
+   *
+   * @example
+   * ```ts
+   * import { Index } from './mod.ts';
+   *
+   * const index = new Index(5, 10);
+   *
+   * const pct = index.convertTo('percent');
+   * const num = index.convertTo('number');
+   *
+   * console.log(pct); // '60%'
+   * console.log(num); // 0.6
+   * ```
+   */
+  public convertTo<K extends keyof IndexConversionMap>(
+    t: K,
+  ): IndexConversionMap[K] {
+    switch (t) {
+      case 'percent':
+        return this.toString() as IndexConversionMap[K];
+      default:
+        return this.valueOf() as IndexConversionMap[K];
+    }
   }
 }

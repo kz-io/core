@@ -1,6 +1,6 @@
 /**
  * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
- * @file This file tests the definedArgs internal function.
+ * @file This file tests the definedArgs function.
  */
 
 import { describe, it } from '@std/testing/bdd';

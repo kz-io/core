@@ -3,7 +3,11 @@
  * @file Exports the PropertyComparer class.
  */
 
-import { ComparisonResult, type TComparer } from '../types/mod.ts';
+import {
+  type AnyObject,
+  ComparisonResult,
+  type TComparer,
+} from '../types/mod.ts';
 
 /**
  * A comparer that compares two objects by a property of type `T`.
@@ -15,38 +19,66 @@ import { ComparisonResult, type TComparer } from '../types/mod.ts';
  * import { assertEquals } from '@std/assert';
  * import { PropertyComparer } from './property_comparer.ts';
  *
- * interface IPerson {
- *   name: string;
- *   age: number;
+ * class Named {
+ * 	 constructor(public name: string) { }
  * }
  *
- * const people: IPerson[] = [
- *   { name: 'Alice', age: 25 },
- *   { name: 'Bob', age: 30 },
- *   { name: 'Charlie', age: 20 },
- *   { name: 'David', age: 35 },
- *   { name: 'Eve', age: 40 },
- *   { name: 'Frank', age: 15 },
+ * class User extends Named {
+ * 	 speak(): void {
+ * 	 	 console.log('Hello, world!');
+ * 	 }
+ * }
+ *
+ * class Dog extends Named {
+ * 	 bark(): void {
+ * 	 	 console.log('Woof woof!');
+ * 	 }
+ * }
+ *
+ * const items: Named[] = [
+ * 	 new User('John'),
+ * 	 new Dog('Fido'),
+ * 	 new User('Alexis'),
+ * 	 new Dog('Akita'),
  * ];
  *
- * const comparer = PropertyComparer.for<IPerson>('age', true);
+ * const comparer = PropertyComparer.for<Named>('name');
+ * const arraySort = comparer.compare.bind(comparer);
  *
- * // bind required for standard Array.prototype.sort
- * people.sort(comparer.compare.bind(comparer));
+ * items.sort(arraySort);
  *
- * assertEquals(people[0].name, 'Eve');
+ * console.log(items[0].name); // 'Akita'
  * ```
  */
-export class PropertyComparer<T> implements TComparer<T> {
+export class PropertyComparer<T extends AnyObject> implements TComparer<T> {
   /**
-   * Creates a new `PropertyComparer` instance.
+   * Returns a PropertyComparer for the specified property on `T`.
+   *
+   * @template T The type of the objects to compare.
    *
    * @param property The property to compare by.
    * @param reverse Whether to reverse the comparison.
    *
    * @returns A new `PropertyComparer` instance.
+   *
+   * @example
+   * ```ts
+   * import { PropertyComparer } from './property_comparer.ts';
+   *
+   * interface IUser {
+   * 	 name: string;
+   * }
+   *
+   * const comparer = PropertyComparer.for<IUser>('name');
+   * const akira: IUser = { name: 'Akira' };
+   * const tae: IUser = { name: 'Tae' };
+   *
+   * const result = comparer.compare(akira, tae, true);
+   *
+   * console.log(result); // ComparisonResult.Greater
+   * ```
    */
-  public static for<T>(
+  public static for<T extends AnyObject>(
     property: keyof T,
     reverse = false,
   ): PropertyComparer<T> {

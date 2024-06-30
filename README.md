@@ -20,9 +20,16 @@ A collection of core modules containing commonly-used features and types, adapte
 
 ## Examples
 
-<!-- TODO: Add examples for main module -->
-
 ## Sub-modules
+
+The `@kz/core` module contains several sub-modules:
+
+- `exceptions` - Provides commonly used exceptions.
+  - Features in the `exceptions` sub-module are also exported as part of the top-level module.
+- `types` - Provides commonly used type aliases, interfaces, and enums.
+  - Features in the `types` sub-module are also exported as part of the top-level module.
+- `utils` - Provides commonly used utilities used across kz libraries.
+  - Features in the `types` sub-module are also exported as `utils` in the top-level module.
 
 ## Contributing
 

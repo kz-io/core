@@ -1,51 +1,61 @@
 /**
  * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
- * @file Exports the SemVerVersionComparer class.
+ * @file Exports the VersionComparer class.
  */
 
 import {
   ComparisonResult,
-  type ISemVerVersionDescriptor,
+  type IVersionDescriptor,
   type TComparer,
 } from '../types/mod.ts';
 
 /**
- * A comparer that compares two semantic version version descriptors.
+ * A comparer class that compares two `Version`s.
  *
  * @example
  * ```ts
- * import { SemVerVersionComparer } from './sem_ver_version_comparer.ts';
+ * import { Version } from './version.ts';
+ * import { VersionComparer } from './version_comparer.ts';
  *
- * const comparer = new SemVerVersionComparer();
+ * const versions: Version[] = [
+ * 	 Version.parse('1.2.3'),
+ * 	 Version.fromValue(10101),
+ * 	 Version.parse('0.0.3-rc1.2'),
+ * 	 Version.parse('0.0.3-rc1.1'),
+ * ];
  *
- * console.log(comparer.compare({ major: 1, minor: 0, patch: 0 }, { major: 1, minor: 0, patch: 1 })); // ComparisonResult.Lesser
+ * const comparer = new VersionComparer();
+ * const arraySort = comparer.compare.bind(comparer);
+ *
+ * versions.sort(arraySort);
+ *
+ * console.log(versions[0].toString()); // '0.0.3-rc1.1'
  * ```
  */
-export class SemVerVersionComparer
-  implements TComparer<ISemVerVersionDescriptor> {
+export class VersionComparer implements TComparer<IVersionDescriptor> {
   /**
-   * Creates a new `SemVerVersionComparer` instance.
+   * Creates a new `VersionComparer` instance.
    *
    * @param reverse Whether to reverse the comparison.
    *
-   * @returns A new `SemVerVersionComparer` instance.
+   * @returns A new `VersionComparer` instance.
    */
   constructor(
     protected readonly reverse: boolean = false,
   ) {}
 
   /**
-   * Compares two semantic version version descriptors.
+   * Compares two versions, optionally reversing the comparison.
    *
-   * @param a The first version descriptor.
-   * @param b The second version descriptor.
+   * @param a The first `Version` of the comparison.
+   * @param b The second `Version` of the comparison.
    * @param reverse Whether to reverse the comparison.
    *
    * @returns The comparison result.
    */
   public compare(
-    a: ISemVerVersionDescriptor,
-    b: ISemVerVersionDescriptor,
+    a: IVersionDescriptor,
+    b: IVersionDescriptor,
     reverse = this.reverse,
   ): ComparisonResult {
     if (a.major > b.major) {
