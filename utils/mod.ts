@@ -9,4 +9,5 @@
 export * as ObjectUtils from './object_utils.ts';
 export * as RegExpUtils from './regexp_utils.ts';
 export * as StringUtils from './string_utils.ts';
+export * as CuratedRegExp from './curated_reg_exp.ts';
 export * from './types/mod.ts';

@@ -4,7 +4,7 @@
  */
 
 import { readPath } from './object_utils.ts';
-import { NEW_LINE } from './regexp_utils.ts';
+import { ALPHA, ALPHA_NUMERIC, NEW_LINE, NUMERIC } from './regexp_utils.ts';
 
 import type { AnyObject } from '../types/mod.ts';
 import type { ObjectPaths, TemplateStringCallback } from './types/mod.ts';
@@ -150,6 +150,30 @@ export function collapseWhitespace(str: string): string {
  */
 export function normalizeNewLines(str: string): string {
   return str.replace(NEW_LINE, '\n');
+}
+
+export function isNumeric(str: string): boolean {
+  return NUMERIC.test(str);
+}
+
+export function isAlpha(str: string): boolean {
+  return ALPHA.test(str);
+}
+
+export function isAlphaNumeric(str: string): boolean {
+  return ALPHA_NUMERIC.test(str);
+}
+
+export function isUpperCase(str: string): boolean {
+  return str === str.toUpperCase();
+}
+
+export function isLowerCase(str: string): boolean {
+  return str === str.toLowerCase();
+}
+
+export function isWhitespace(str: string): boolean {
+  return /^\s+$/gm.test(str);
 }
 
 //truncate options: start, end, middle

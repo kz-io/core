@@ -60,3 +60,43 @@ export function writePath<T extends AnyObject, P extends ObjectPaths<T>>(
 
   target[lastKey as keyof typeof target] = value;
 }
+
+/**
+ * Creates a function that can be used to render a template string with provided data.
+ *
+ * @param object The object to render the template with.
+ * @returns A function that can be used to render a template string with provided data.
+ */
+export function createTemplateRenderer<
+  T extends AnyObject,
+  S extends ObjectPaths<T> = ObjectPaths<T>,
+>(
+  object: T,
+): (
+  strings: TemplateStringsArray,
+  ...keys: (S | ((data: T) => string))[]
+) => string {
+  return function render(
+    strings: TemplateStringsArray,
+    ...keys: (S | ((data: T) => string))[]
+  ): string {
+    const cleanedValues = [...strings.raw.values()];
+    const initValue = cleanedValues.shift() || '';
+
+    const callback = (data: T) => {
+      const resolved = keys.reduce((result, key) => {
+        const value = typeof key === 'function'
+          ? key(data)
+          : readPath(data, key);
+        const next = cleanedValues.shift();
+        const acc = `${String(result)}${value}${next}`;
+
+        return acc;
+      }, initValue);
+
+      return resolved;
+    };
+
+    return callback(object);
+  };
+}

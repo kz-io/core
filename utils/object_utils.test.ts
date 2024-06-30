@@ -74,4 +74,21 @@ describe('ObjectUtils', () => {
       assertEquals(object.a.b.f!.g, 'hello');
     });
   });
+
+  describe('createTemplateRenderer', () => {
+    it('should return a template renderer', () => {
+      const object = {
+        name: 'world',
+        greeting: 'How are you?',
+      } as const;
+
+      const renderer = ObjectUtils.createTemplateRenderer<
+        { name: string; greeting: string }
+      >(object);
+
+      const result = renderer`Hello, ${'name'}. ${'greeting'}`;
+
+      assertEquals(result, 'Hello, world. How are you?');
+    });
+  });
 });
