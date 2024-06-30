@@ -197,4 +197,24 @@ describe('Index', () => {
       assertEquals(index.fromStart, 2);
     });
   });
+
+  describe('[Symbol.toPrimitive]', () => {
+    it('should return the index as a number', () => {
+      const index = Index.of(2, 5);
+      assertEquals(+index, 2);
+    });
+
+    it('should return the index as a string', () => {
+      const index = Index.of(2, 5);
+      assertEquals(`${index}`, '40%');
+    });
+  });
+
+  describe('convertTo', () => {
+    it('should return a converted value', () => {
+      const index = Index.of(2, 5);
+      assertEquals(index.convertTo('percent'), '40%');
+      assertEquals(index.convertTo('number'), 2);
+    });
+  });
 });

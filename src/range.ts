@@ -3,10 +3,90 @@
  * @file Exports the Range class.
  */
 
+import { TBase } from '../types/mod.ts';
+
 /**
- * Represents a range of numbers.
+ * A class representing a range of numbers.
+ *
+ * @example
+ * ```ts
+ * import { Range } from './range.ts';
+ *
+ * const range = Range.of(2, -2);
+ * const array = range.toArray();
+ *
+ * console.log(array); // [2, 1, 0, -1, -2]
+ * ```
  */
-export class Range implements Iterable<number> {
+export class Range implements Iterable<number>, TBase<number[]> {
+  /**
+   * Returns a `Range` instance from `0` to a specified end number.
+   *
+   * Negative numbers are supported and are counted to from `0`.
+   *
+   * @param end The last number in the `Range`.
+   * @returns The `Range` instance.
+   *
+   * @example
+   * ```ts
+   * import { Range } from './range.ts';
+   *
+   * const range = Range.to(5);
+   * const array = range.toArray();
+   *
+   * console.log(array); // [0, 1, 2, 3, 4, 5]
+   * ```
+   */
+  public static to(end: number): Range {
+    return new Range(0, end);
+  }
+
+  /**
+   * Returns a `Range` instance from a specified number to `0`.
+   *
+   * Negative numbers are supported, and will count up to `0`.
+   *
+   * @param start The first number in the `Range`.
+   * @returns The `Range` instance.
+   *
+   * @example
+   * ```ts
+   * import { Range } from './range.ts';
+   *
+   * const range = Range.from(5);
+   * const array = range.toArray();
+   *
+   * console.log(array); // [5, 4, 3, 2, 1, 0]
+   * ```
+   */
+  public static from(start: number): Range {
+    return new Range(start, 0);
+  }
+
+  /**
+   * Returns a `Range` from a specified start and end number.
+   *
+   * Negative values are supported. A `Range` with  `start` number
+   * greater than the `end` will count down to the `end`.
+   *
+   * @param start The first number in the `Range`.
+   * @param end The last number in the `Range`.
+   * @returns The `Range` instance.
+   *
+   * @example
+   * ```ts
+   * import { Range } from './range.ts';
+   *
+   * const range = Range.of(2, -2);
+   * const array = range.toArray();
+   *
+   * console.log(array); // [2, 1, 0, -1, -2]
+   * ```
+   */
+  public static of(start: number, end: number): Range {
+    return new Range(start, end);
+  }
+
   /**
    * Creates a new `Range` instance.
    *
@@ -16,7 +96,39 @@ export class Range implements Iterable<number> {
   constructor(protected start: number, protected end: number) {}
 
   /**
-   * The length of the range.
+   * Returns a string representation of the range.
+   *
+   * @returns A string representation of the range.
+   */
+  public toString(): string {
+    return this.toArray().join(',');
+  }
+
+  /**
+   * Returns the value of the range as an array of numbers.
+   *
+   * @returns The value of the range as an array of numbers.
+   */
+  public valueOf(): number[] {
+    return this.toArray();
+  }
+
+  /**
+   * Returns a primitive value representing the object value, either a `string` or `number`, depending on the hint.
+   *
+   * @param hint The type of primitive value to return.
+   * @returns Returns a `string` if `hint` is `'string`' or `'default'`, otherwise a `number`.
+   */
+  public [Symbol.toPrimitive](hint: string): string | number {
+    if (hint === 'number') {
+      return this.toArray().length;
+    }
+
+    return this.toString();
+  }
+
+  /**
+   * The number of numbers in the range.
    */
   public get length(): number {
     const { start, end } = this;

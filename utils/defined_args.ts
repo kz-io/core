@@ -1,13 +1,13 @@
 /**
  * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
- * @file This file exports the definedArgs internal function.
+ * @file This file exports the definedArgs function.
  */
 
 /**
- * Checks if all the arguments are defined.
+ * Checks if all arguments are defined.
  *
- * @param args The arguments to check if they are defined.
- * @returns A boolean indicating if all the arguments are defined.
+ * @param args The arguments list.
+ * @returns Whether all the arguments are defined.
  */
 export function definedArgs(...args: unknown[]): boolean {
   for (const arg of args) {

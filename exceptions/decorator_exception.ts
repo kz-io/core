@@ -3,7 +3,7 @@
  * @file This file exports the DecoratorException class and its related exception data type.
  */
 
-import { definedArgs } from '../_internal/mod.ts';
+import { definedArgs } from '../utils/mod.ts';
 import { ValueException } from './value_exception.ts';
 
 import type { DecoratorTarget } from '../types/mod.ts';

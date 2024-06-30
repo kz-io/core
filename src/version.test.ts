@@ -213,33 +213,33 @@ describe('Version', () => {
     });
   });
 
-  describe('toBoolean', () => {
-    it('should return true', () => {
-      const version = new Version({ major: 1, minor: 2, patch: 3 });
-
-      assertEquals(version.toBoolean(), true);
-    });
-
-    it('should return false', () => {
-      const version = new Version({ major: 0, minor: 1, patch: 2 });
-
-      assertEquals(version.toBoolean(), false);
-    });
-  });
-
-  describe('compare', () => {
+  describe('compareTo', () => {
     it('should compare two versions', () => {
       const a = new Version({ major: 1, minor: 2, patch: 3 });
       const b = new Version({ major: 1, minor: 2, patch: 4 });
 
-      assertEquals(a.compare(b), -1);
+      assertEquals(a.compareTo(b), -1);
     });
 
     it('should compare two versions in reverse', () => {
       const a = new Version({ major: 1, minor: 2, patch: 4 });
       const b = new Version({ major: 1, minor: 2, patch: 3 });
 
-      assertEquals(a.compare(b, true), -1);
+      assertEquals(a.compareTo(b, true), -1);
+    });
+  });
+
+  describe('[Symbol.toPrimitive]', () => {
+    it('should return the version string', () => {
+      const version = new Version({ major: 1, minor: 2, patch: 3 });
+
+      assertEquals(`${version}`, '1.2.3');
+    });
+
+    it('should return the numeric version', () => {
+      const version = new Version({ major: 1, minor: 2, patch: 3 });
+
+      assertEquals(+version, 10203);
     });
   });
 });

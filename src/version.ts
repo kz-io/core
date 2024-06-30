@@ -5,35 +5,50 @@
 
 import {
   ComparisonResult,
-  type ISemVerVersionDescriptor,
+  type IVersionDescriptor,
+  type TBase,
   type TComparable,
 } from '../types/mod.ts';
-import { AbstractPrimitiveConvertible } from './abstract_primitive_convertible.ts';
-import { SemVerVersionComparer } from './sem_ver_version_comparer.ts';
+import { VersionComparer } from './version_comparer.ts';
 
 const semVerRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(.+))?(?:\+(.+))?$/;
 
 /**
- * A class representing a version providing features for version comparison and manipulation.
+ * A class representing and manipulating a semantic version.
  *
  * @example
  * ```ts
+ * import { assertEquals } from '@std/assert';
  * import { Version } from './version.ts';
+ * import { ComparisonResult } from '../types/mod.ts';
  *
- * const version = new Version({ major: 1, minor: 0, patch: 0 });
+ * const versionA = Version.fromValue(10203);
+ * const versionB = Version.fromValue(10204);
  *
- * console.log(version.toString()); // '1.0.0'
+ * const result = versionA.compareTo(versionB);
  *
- * console.log(version.toNumber()); // 10000
+ * assertEquals(versionA.toString(), '1.2.3');
+ * assertEquals(versionB.toString(), '1.2.4');
+ * assertEquals(result, ComparisonResult.Lesser);
  * ```
  */
-export class Version extends AbstractPrimitiveConvertible
-  implements TComparable<Version> {
+export class Version implements TComparable<Version>, TBase<number> {
   /**
-   * Creates a new `Version` instance from a numeric value.
+   * Returns a `Version` instance from a numeric value.
+   *
+   * Only supports `major`, `minor`, and `patch` versions, using modulus
+   * of `10,000` for `major`, `1,000` for `minor`, and `100` for `patch`.
    *
    * @param value The numeric value of the version.
    * @returns The `Version` instance.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   * const version = Version.fromValue(10203);
+   *
+   * console.log(version.toString()); // 1.2.3
+   * ```
    */
   public static fromValue(value: number): Version {
     const major = Math.floor(value / 10000);
@@ -44,11 +59,23 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Parses a version string into a `Version`.
+   * Returns a `Version` from parsing a string representation of a version.
    *
    * @param version The version string to parse.
    *
    * @returns The parsed `Version`.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   * const version = Version.parse('1.2.3-rc1.2+123');
+   *
+   * console.log(version.major); // 1;
+   * console.log(version.minor); // 2;
+   * console.log(version.patch); // 3;
+   * console.log(version.preRelease); // rc1.2;
+   * console.log(version.build); // 123;
+   * ```
    */
   public static parse(version: string): Version {
     if (!semVerRegex.test(version)) {
@@ -65,20 +92,18 @@ export class Version extends AbstractPrimitiveConvertible
   /**
    * Creates a new `Version` instance.
    *
-   * @param version The version object.
+   * @param version The object describing the version.
    */
   constructor(
-    protected version: ISemVerVersionDescriptor = {
+    protected version: IVersionDescriptor = {
       major: 0,
       minor: 0,
       patch: 0,
     },
-  ) {
-    super();
-  }
+  ) {}
 
   /**
-   * The major version.
+   * The major version of the version.
    */
   public get major(): number {
     const { major } = this.version;
@@ -87,7 +112,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Sets the major version.
+   * Sets the major version of the version.
    *
    * @param value The value to set.
    */
@@ -98,7 +123,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * The minor version.
+   * The minor version of the version.
    */
   public get minor(): number {
     const { minor } = this.version;
@@ -107,7 +132,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Sets the minor version.
+   * Sets the minor version of the version.
    *
    * @param value The value to set.
    */
@@ -118,7 +143,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * The patch version.
+   * The patch version of the version.
    */
   public get patch(): number {
     const { patch } = this.version;
@@ -127,7 +152,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Sets the patch version.
+   * Sets the patch version of the version.
    *
    * @param value The value to set.
    */
@@ -138,7 +163,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * The pre-release version.
+   * The pre-release of the version.
    */
   public get preRelease(): string {
     const { preRelease } = this.version;
@@ -147,7 +172,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Sets the pre-release version.
+   * Sets the pre-release of the version.
    *
    * @param value The value to set.
    */
@@ -158,7 +183,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * The build version.
+   * The build of the version.
    */
   public get build(): string {
     const { build } = this.version;
@@ -167,7 +192,7 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Sets the build version.
+   * Sets the build of the version.
    *
    * @param value The value to set.
    */
@@ -181,6 +206,16 @@ export class Version extends AbstractPrimitiveConvertible
    * Bumps the version to the next major version.
    *
    * @returns The next major version.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   *
+   * const version = Version.parse('1.2.3');
+   * const bumped = version.bumpMajor();
+   *
+   * console.log(bumped.toString()); // 2.0.0
+   * ```
    */
   public bumpMajor(): Version {
     const { major } = this.version;
@@ -192,6 +227,16 @@ export class Version extends AbstractPrimitiveConvertible
    * Bumps the version to the next minor version.
    *
    * @returns The next minor version.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   *
+   * const version = Version.parse('1.2.3');
+   * const bumped = version.bumpMinor();
+   *
+   * console.log(bumped.toString()); // 1.3.0
+   * ```
    */
   public bumpMinor(): Version {
     const { major, minor } = this.version;
@@ -203,6 +248,16 @@ export class Version extends AbstractPrimitiveConvertible
    * Bumps the version to the next patch version.
    *
    * @returns The next patch version.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   *
+   * const version = Version.parse('1.2.3');
+   * const bumped = version.bumpPatch();
+   *
+   * console.log(bumped.toString()); // 1.2.4
+   * ```
    */
   public bumpPatch(): Version {
     const { major, minor, patch } = this.version;
@@ -211,9 +266,23 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Returns the numeric value of the version.
+   * Returns a primitive value representing the object value, either a `string` or `number`, depending on the hint.
    *
-   * @returns The numeric value of the version.
+   * @param hint The type of primitive value to return.
+   * @returns Returns a `string` if hint is `'string'` or `'default'`, otherwise a `number`.
+   */
+  [Symbol.toPrimitive](hint: string): string | number {
+    if (hint === 'number') {
+      return this.valueOf();
+    }
+
+    return this.toString();
+  }
+
+  /**
+   * Returns the numeric value of the `Version`.
+   *
+   * @returns The numeric value of the `Version`.
    */
   public valueOf(): number {
     const { major, minor, patch } = this;
@@ -223,9 +292,9 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Returns the string representation of the version.
+   * Returns the string representation of the `Version`.
    *
-   * @returns The string representation of the version.
+   * @returns The string representation of the `Version`.
    */
   public toString(): string {
     const { major, minor, patch, preRelease, build } = this.version;
@@ -244,23 +313,25 @@ export class Version extends AbstractPrimitiveConvertible
   }
 
   /**
-   * Returns whether the version can be considered stable.
+   * Compares this `Version` instance with another, optionally reversing the comparison.
    *
-   * @returns Whether the version can be considered stable.
-   */
-  public toBoolean(): boolean {
-    return this.major > 0 && !this.preRelease;
-  }
-
-  /**
-   * Compares this version with another version.
-   *
-   * @param other The other version to compare.
+   * @param other The other `Version` to compare to.
    * @param reverse Whether to reverse the comparison.
    * @returns The comparison result.
+   *
+   * @example
+   * ```ts
+   * import { Version } from './version.ts';
+   *
+   * const versionA = Version.fromValue(10203);
+   * const versionB = Version.fromValue(10204);
+   * const result = versionA.compareTo(versionB);
+   *
+   * console.log(result); // ComparisonResult.Lesser
+   * ```
    */
-  compare(other: Version, reverse: boolean = false): ComparisonResult {
-    const comparer = new SemVerVersionComparer(reverse);
+  compareTo(other: Version, reverse: boolean = false): ComparisonResult {
+    const comparer = new VersionComparer(reverse);
 
     return comparer.compare(this, other);
   }
